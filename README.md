@@ -31,6 +31,8 @@ Currently, I am aiming to write all logic in Javascript and most graphics being 
 
 Main and only screen:
 
+![alt text](https://github.com/heinhtetPS/Mothership-Down/blob/master/Photo%20Sep%2006%2C%2012%2057%2056%20AM.jpg "wireframe sketch")
+
 
 ## Implementation Timeline
 
