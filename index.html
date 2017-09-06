@@ -10,29 +10,66 @@
 
         //initialize canvas vars
         const canvas = document.getElementById('canvas');
+        const canvasbg = document.getElementById('canvas-bg');
         var ctx = canvas.getContext('2d');
+        var bgctx = canvasbg.getContext('2d');
         ctx.fillStyle = 'white';
+
+        //initialize image conntainer
+        var imageContainer = new function() {
+          this.background = new Image();
+
+        
+        }
 
         //initialize ship vars
         let x = canvas.width/2;
         let y = canvas.height - 100;
         ctx.fillRect(x, y, 20, 20);
 
-        //initialize keypress events
-        
-        switch (expression) {
-          case expression:
+        //initialize keypress handler
 
-            break;
-          default:
+        document.addEventListener('keydown', (e) => {
+          switch (e.keyCode) {
+            // case 38:
+            // //up
+            //   y -= 1;
+            //   ctx.fillRect(x, y, 20, 20);
+            //   break;
+            // case 40:
+            //   //down
+            //   y += 1;
+            //   ctx.fillRect(x, y, 20, 20);
+            //   break;
+            case 37:
+                //left
+              ctx.clearRect(x, y, 20, 20);
+              x -= 10;
+              ctx.fillRect(x, y, 20, 20);
+              break;
+            case 39:
+                //right
+              ctx.clearRect(x, y, 20, 20);
+              x += 10;
+              ctx.fillRect(x, y, 20, 20);
+              break;
+            case 32:
+                //spacebar shoot
 
-        }
+                ctx.fillRect(x, y, 20, 20);
+                break;
+            default:
+
+          }
+        })
+
       })
     </script>
   </head>
   <body>
     <div class="content-container">
-      <canvas id="canvas" height="400" width="600"> </canvas>
+      <canvas id="canvas-bg" height="400" width="600"></canvas>
+      <canvas id="canvas" height="400" width="600" tabindex='1'></canvas>
     </div>
   </body>
 </html>
