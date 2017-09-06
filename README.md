@@ -2,7 +2,7 @@
 
 ## Proposal
 
-Mothership Down tells the story of the popular arcade classic "Space Invaders" from the side of the Alien invaders instead of the humans. It contains elements of the original space invaders, but adds additional layers of resource management and tower defense gameplay that introduce a deeper sense of urgency and hectic gameplay into the mix. 
+Mothership Down tells the story of the popular arcade classic "Space Invaders" from the side of the Alien invaders instead of the humans. It contains elements of the original space invaders, but adds additional layers of resource management and some tower defense that introduce a deeper sense of urgency and hectic gameplay into the mix. 
 
 You are the last remaining survivors of your species, thrust into the void of space, after your homeworld was ravaged by environmental destruction. Hoping to start anew, 8 colony ships embarked in 8 different directions hoping to find sanctuary. Of those ships, you command Mothership Omega, the last line of defense against extinction. You must do whatever it takes to ensure the survival of your bretheren. As our game begins, your sensors have identified the 3rd planet in the Milky way Galaxy with a 65% habitability rating. Not ideal, but better than anything you've encountered thusfar...
 
@@ -20,7 +20,7 @@ The player must balance defending the mothership from earth's defense forces and
 Bonus
 - Upgrade weaponry and ship capabilities 
 - Upgrade capabilities of Earth defense forces (more enemy unit types)
-- 
+- Get better textures and sharpen other aesthetic issues.
 
 ## Technologies, Libraries, APIs
 
