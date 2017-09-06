@@ -54,7 +54,7 @@ Main and only screen:
 ### Phase 3 
 - Add build ability to build auto cannons 
 - enemies drop energy that can be used to build or upgrade max power
-- Add additional enemies that spawn other enemies
+- Add additional enemies: ship that spawn other ships, ship that locks down one of your systems until destroyed 
 - Create a wave spawn system that directs the level experience
 
 ### Extras 
