@@ -3,17 +3,36 @@
   <head>
     <meta charset="utf-8">
     <title>Mothership Down!</title>
-    <!-- <link rel="stylesheet" type="text/css" href="./assets/stylesheets/reset.css" /> -->
-    <style>
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="./assets/stylesheets/reset.css" />
+    <link rel="stylesheet" type="text/css" href="./assets/stylesheets/mainpage.css" />
     <script>
+      document.addEventListener('DOMContentLoaded', () => {
 
+        //initialize canvas vars
+        const canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'white';
+
+        //initialize ship vars
+        let x = canvas.width/2;
+        let y = canvas.height - 100;
+        ctx.fillRect(x, y, 20, 20);
+
+        //initialize keypress events
+        
+        switch (expression) {
+          case expression:
+
+            break;
+          default:
+
+        }
+      })
     </script>
   </head>
   <body>
-    <div className="content-container">
-      <canvas> </canvas>
-    <div>
+    <div class="content-container">
+      <canvas id="canvas" height="400" width="600"> </canvas>
+    </div>
   </body>
 </html>
