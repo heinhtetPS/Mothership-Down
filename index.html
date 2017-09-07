@@ -25,40 +25,43 @@
         cannon.generateSelf();
 
         //initialize bullet
-        let bullet = {
-          posX: cannon.posX,
-          posY: cannon.posY,
-          velocity: 10,
-          width: 4,
-          height: 8,
-          alive: false,
-          generateSelf: function(x, y, velocity, width, height, alive) {
+        function bullet(x, y, velocity, width, height) {
+          this.posX = x;
+          this.posY = y;
+          this.velocity = velocity;
+          this.width = width;
+          this.height = height;
 
-            this.posX = bullet.posX;
-            this.posY = bullet.posY;
-            this.velocity = bullet.velocity;
-            this.width = bullet.width;
-            this.height = bullet.height;
 
             ctx.fillStyle = "orange";
             ctx.fillRect(this.posX, this.posY, this.width, this.height);
             this.alive = true;
           }
-        };
+
         //update bullets
         const bulletlist = [];
-        bulletlist.forEach(bullet => {
-          if (bullet.alive) {
+        //if bulletlist is not empty, run this every frame
+        if (bulletlist.length > 0) {
+          console.log("im here");
+          window.setInterval(updateBullets(), 60);
+        }
 
-            if (bullet.posY <= 0) {
+        function updateBullets() {
 
-              ctx.clearRect(bullet.posX, bullet.posY, bullet.width, bullet.height)
-              bullet.posY -= 10;
-              ctx.fillStyle = "orange";
-              ctx.clearRect(bullet.posX, bullet.posY, bullet.width, bullet.height)
+          bulletlist.forEach(bullet => {
+            if (bullet.alive) {
+
+              if (bullet.posY >= 0) {
+                ctx.clearRect(bullet.posX, bullet.posY, bullet.width, bullet.height)
+                bullet.posY -= 10;
+                ctx.fillStyle = "orange";
+                ctx.fillRect(bullet.posX, bullet.posY, bullet.width, bullet.height)
+              } else {
+                //destroy bullet
+              }
             }
-          }
-        });
+          });
+        }
 
 
         //initialize keypress handler
@@ -90,9 +93,8 @@
               break;
             case 32:
                 //spacebar shoot
-                bulletlist.push(bullet.generateSelf(
-                  cannon.posX, cannon.posY,
-                bullet.width, bullet.height));
+                bulletlist.push(new bullet(
+                  cannon.posX, cannon.posY, 10, 4, 8));
                 console.log(bulletlist);
                 break;
             default:
