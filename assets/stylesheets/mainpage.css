@@ -5,9 +5,48 @@
   flex-direction: row;
   justify-content: center;
   margin-top: 10px;
+  height: 110vh;
 }
 
+.game-viewport {
+  width: 604px;
+  /*display: flex;
+  flex-direction: row;*/
+  position: relative;
+  overflow: hidden;
+
+}
+
+.bg-cutter {
+  width: 1200px;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  overflow: hidden;
+}
+
+#canvas-bg {
+  width: 1200px;
+  height: 400px;
+  background-image: url("../images/maxresdefault.jpg");
+  transform: translate3d(0, 0, 0);
+  animation: moveSlideshow 12s linear infinite;
+  overflow: hidden;
+  position: relative;
+  right: 600px;
+}
+
+
+@keyframes moveSlideshow {
+  100% {
+    transform: translateX(33.3333%);
+  }
+}
+
+
 #canvas {
-  border: 5px solid black;
+  max-width: 600px;
+  max-height: 400px;
+  border: 2px solid white;
   position: absolute;
 }

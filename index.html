@@ -10,26 +10,61 @@
 
         //initialize canvas vars
         const canvas = document.getElementById('canvas');
-        const canvasbg = document.getElementById('canvas-bg');
         var ctx = canvas.getContext('2d');
-        var bgctx = canvasbg.getContext('2d');
         ctx.fillStyle = 'white';
 
-        //initialize image conntainer
-        var imageContainer = new function() {
-          this.background = new Image();
 
-        
-        }
+        //initialize cannon vars
+        let cannon = {
+          posX: canvas.width/2,
+          posY: canvas.height - 100,
+          generateSelf: function() {
+            ctx.fillRect(this.posX, this.posY, 10, 20);
+          }
+        };
+        cannon.generateSelf();
 
-        //initialize ship vars
-        let x = canvas.width/2;
-        let y = canvas.height - 100;
-        ctx.fillRect(x, y, 20, 20);
+        //initialize bullet
+        let bullet = {
+          posX: cannon.posX,
+          posY: cannon.posY,
+          velocity: 10,
+          width: 4,
+          height: 8,
+          alive: false,
+          generateSelf: function(x, y, velocity, width, height, alive) {
+
+            this.posX = bullet.posX;
+            this.posY = bullet.posY;
+            this.velocity = bullet.velocity;
+            this.width = bullet.width;
+            this.height = bullet.height;
+
+            ctx.fillStyle = "orange";
+            ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            this.alive = true;
+          }
+        };
+        //update bullets
+        const bulletlist = [];
+        bulletlist.forEach(bullet => {
+          if (bullet.alive) {
+
+            if (bullet.posY <= 0) {
+
+              ctx.clearRect(bullet.posX, bullet.posY, bullet.width, bullet.height)
+              bullet.posY -= 10;
+              ctx.fillStyle = "orange";
+              ctx.clearRect(bullet.posX, bullet.posY, bullet.width, bullet.height)
+            }
+          }
+        });
+
 
         //initialize keypress handler
-
+        //this is also basically the update() for ship
         document.addEventListener('keydown', (e) => {
+          ctx.fillStyle = 'white';
           switch (e.keyCode) {
             // case 38:
             // //up
@@ -43,20 +78,22 @@
             //   break;
             case 37:
                 //left
-              ctx.clearRect(x, y, 20, 20);
-              x -= 10;
-              ctx.fillRect(x, y, 20, 20);
+              ctx.clearRect(cannon.posX, cannon.posY, 10, 20);
+              cannon.posX -= 20;
+              ctx.fillRect(cannon.posX, cannon.posY, 10, 20);
               break;
             case 39:
                 //right
-              ctx.clearRect(x, y, 20, 20);
-              x += 10;
-              ctx.fillRect(x, y, 20, 20);
+              ctx.clearRect(cannon.posX, cannon.posY, 10, 20);
+              cannon.posX += 20;
+              ctx.fillRect(cannon.posX, cannon.posY, 10, 20);
               break;
             case 32:
                 //spacebar shoot
-
-                ctx.fillRect(x, y, 20, 20);
+                bulletlist.push(bullet.generateSelf(
+                  cannon.posX, cannon.posY,
+                bullet.width, bullet.height));
+                console.log(bulletlist);
                 break;
             default:
 
@@ -68,8 +105,12 @@
   </head>
   <body>
     <div class="content-container">
-      <canvas id="canvas-bg" height="400" width="600"></canvas>
-      <canvas id="canvas" height="400" width="600" tabindex='1'></canvas>
+      <div class="game-viewport">
+        <div class="bg-cutter">
+          <div id="canvas-bg"></div>
+          <canvas id="canvas" height="400" width="600" tabindex='1'></canvas>
+        </div>
+      </div>
     </div>
   </body>
 </html>
