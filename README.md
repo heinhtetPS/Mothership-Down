@@ -24,7 +24,7 @@ Bonus
 
 ## Technologies, Libraries, APIs
 
-Currently, I am aiming to write all logic in Javascript and most graphics being rendered in HTML5 Canvas via sprite sheets and sprite animation.
+Currently, I am aiming to write all logic in Javascript and most graphics being rendered in HTML5 Canvas. I'm hoping to incorporate spritesheets and sprite animation.
 
 
 ## Wireframes

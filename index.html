@@ -8,47 +8,65 @@
     <script>
       document.addEventListener('DOMContentLoaded', () => {
 
+        //run once
+        initialize();
+
+        //run every frame
+        window.setInterval(update, 60);
+        window.setInterval(draw, 60);
+
         //initialize canvas vars
-        const canvas = document.getElementById('canvas');
-        var ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'white';
+        function initialize() {
+
+          window.canvas = document.getElementById('canvas');
+          window.ctx = canvas.getContext('2d');
+          ctx.fillStyle = 'white';
+
+          //initialize cannon vars
+          window.cannon = {
+            posX: canvas.width/2,
+            posY: canvas.height - 100,
+            drawSelf: function() {
+              ctx.fillStyle = "white";
+              ctx.fillRect(this.posX, this.posY, 15, 30);
+            }
+          };
+
+          //list of bullets on screen
+          window.bulletList = [];
+        }
 
 
-        //initialize cannon vars
-        let cannon = {
-          posX: canvas.width/2,
-          posY: canvas.height - 100,
-          generateSelf: function() {
-            ctx.fillRect(this.posX, this.posY, 10, 20);
-          }
-        };
-        cannon.generateSelf();
+
 
         //initialize bullet
         function bullet(x, y, velocity, width, height) {
-          this.posX = x;
-          this.posY = y;
-          this.velocity = velocity;
-          this.width = width;
-          this.height = height;
+            this.alive = false;
+            this.spawn = function(x, y, velocity, width, height) {
+              this.posX = x;
+              this.posY = y;
+              this.velocity = velocity;
+              this.width = width;
+              this.height = height;
+              this.alive = true;
+            }
 
+            this.drawSelf = function() {
 
-            ctx.fillStyle = "orange";
-            ctx.fillRect(this.posX, this.posY, this.width, this.height);
-            this.alive = true;
+              ctx.clearRect(this.posX, this.posY, this.width, this.height);
+              ctx.fillStyle = "orange";
+              ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            }
           }
 
-        //update bullets
-        const bulletlist = [];
-        //if bulletlist is not empty, run this every frame
-        if (bulletlist.length > 0) {
-          console.log("im here");
-          window.setInterval(updateBullets(), 60);
+        function update() {
+          updateBullets();
         }
 
-        function updateBullets() {
 
-          bulletlist.forEach(bullet => {
+        //if bulletList is not empty, run this every frame
+        function updateBullets() {
+          bulletList.forEach(bullet => {
             if (bullet.alive) {
 
               if (bullet.posY >= 0) {
@@ -63,6 +81,18 @@
           });
         }
 
+        function draw() {
+          //draw main cannon
+          cannon.drawSelf();
+          //each bullet draw itself
+          // for (let i = 0; i < bulletList.length; i++) {
+          //   bulletList[i].drawBullet();
+          // }
+
+
+
+
+        }
 
         //initialize keypress handler
         //this is also basically the update() for ship
@@ -81,21 +111,24 @@
             //   break;
             case 37:
                 //left
-              ctx.clearRect(cannon.posX, cannon.posY, 10, 20);
+              ctx.clearRect(cannon.posX, cannon.posY, 15, 30);
               cannon.posX -= 20;
-              ctx.fillRect(cannon.posX, cannon.posY, 10, 20);
+              ctx.fillRect(cannon.posX, cannon.posY, 15, 30);
               break;
             case 39:
                 //right
-              ctx.clearRect(cannon.posX, cannon.posY, 10, 20);
+              ctx.clearRect(cannon.posX, cannon.posY, 15, 30);
               cannon.posX += 20;
-              ctx.fillRect(cannon.posX, cannon.posY, 10, 20);
+              ctx.fillRect(cannon.posX, cannon.posY, 15, 30);
               break;
             case 32:
                 //spacebar shoot
-                bulletlist.push(new bullet(
-                  cannon.posX, cannon.posY, 10, 4, 8));
-                console.log(bulletlist);
+                let nb = new bullet(
+                  cannon.posX, cannon.posY, 10, 6, 12);
+                  nb.spawn(cannon.posX, cannon.posY, 10, 6, 12);
+                  nb.drawSelf();
+                  bulletList.push(nb);
+                console.log(bulletList);
                 break;
             default:
 
