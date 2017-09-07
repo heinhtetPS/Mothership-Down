@@ -12,26 +12,59 @@
         initialize();
 
         //run every frame
-        window.setInterval(update, 60);
-        window.setInterval(draw, 60);
+        window.setInterval(update, 16);
+        window.setInterval(draw, 16);
+
+        //custom interval updates
+        window.setInterval(randomSpawn, 3000);
+        if (enemyList.length > 0)
+        window.setInterval(enemyUpdate, 1000);
 
         //initialize canvas vars
         function initialize() {
 
           window.canvas = document.getElementById('canvas');
           window.ctx = canvas.getContext('2d');
-          ctx.fillStyle = 'white';
+
+          //initialize mothership
+          window.mothership = {
+            posX: 60,
+            posY: 360,
+            width: 470,
+            height: 100,
+            drawSelf: function() {
+              ctx.fillStyle = "purple";
+              ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            }
+          }
 
           //initialize cannon vars
           window.cannon = {
             posX: canvas.width/2,
-            posY: canvas.height - 100,
+            posY: canvas.height - 70,
             width: 15,
             height: 30,
             drawSelf: function() {
-              ctx.fillStyle = "white";
+              ctx.fillStyle = "gray";
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
             }
+          };
+
+          //helper methods-----------------------
+
+          //max is not included
+          window.randomInt = function(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+          }
+
+          //initialize spawner
+          window.spawner = {
+            // spawnEnemy: enemyShip.spawn(window.randomInt(30, 570), window.randomInt(30, 200)
+            // enemyShip.defaultVelocityX, enemyShip.defaultVelocityY,
+            // enemyShip.defaultWidth, enemyShip.defaultHeight),
+
           };
 
           //used with screen logic
@@ -46,7 +79,9 @@
           window.bulletList = [];
           //list of enemies on screen
           window.enemyList = [];
+          //max should be
         }
+        //end initialize --------------------------
 
 
 
@@ -54,6 +89,10 @@
         //main bullet script
         function bullet(x, y, velocity, width, height) {
             this.alive = false;
+            this.defaultWidth = 6;
+            this.defaultHeight = 12;
+            this.defaultVelocity = 5;
+
             this.spawn = function(x, y, velocity, width, height) {
               this.posX = x;
               this.posY = y;
@@ -95,10 +134,29 @@
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
             }
 
+            this.moveHorizontal = function() {
+              ctx.clearRect(this.posX, this.posY, this.width, this.height);
+              ctx.fillStyle = "white";
+              if (randomInt(0,2) === 0) {
+                this.posX += 30;
+              } else {
+                this.posX -= 30;
+              }
+              ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            }
+
+            this.moveVertical = function() {
+              ctx.clearRect(this.posX, this.posY, this.width, this.height);
+              ctx.fillStyle = "white";
+              this.posY += 50;
+              ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            }
+
           }
 
         function update() {
           updateBullets();
+
         }
 
         function cannonScreenResets() {
@@ -110,36 +168,74 @@
 
 
         //if bulletList is not empty, run this every frame
+        //this is problematic because updating the pos needs to be seperated from drawing
+        //if they're together, bullet stops executing velocity before it can become invalid
+        //and undrawable
         function updateBullets() {
-          bulletList.forEach(bullet => {
-            if (bullet.alive) {
+          for (let i = 0; i < bulletList.length; i++) {
 
-              if (bullet.posY >= 0) {
-                ctx.clearRect(bullet.posX, bullet.posY, bullet.width, bullet.height)
-                bullet.posY -= 10;
+            if (bulletList[i].alive) {
+              //if bullet is alive and still within play area...
+              if (bulletList[i].posY > 0) {
+                ctx.clearRect(bulletList[i].posX, bulletList[i].posY,
+                  bulletList[i].width, bulletList[i].height)
+                bulletList[i].posY -= 5;
                 ctx.fillStyle = "orange";
-                ctx.fillRect(bullet.posX, bullet.posY, bullet.width, bullet.height)
+                ctx.fillRect(bulletList[i].posX, bulletList[i].posY,
+                  bulletList[i].width, bulletList[i].height)
               } else {
-                //destroy bullet
+                //otherwise get rid of it
+                //splice removes from i position, 1 thing
+                bulletList[i].alive = false;
+                bulletList.splice(i, 1);
               }
             }
-          });
+          }
+
+        }
+        //this isn't even running;
+        function enemyUpdate() {
+          console.log("inside enemy update");
+          for (let i = 0; i < enemyList.length; i++) {
+            if (enemyList[i].alive) {
+              debugger
+              enemyList[i].moveHorizontal();
+              enemyList[i].moveVertical();
+            }
+          }
         }
 
-        //remove bullets from bulletlist
+        function randomSpawn() {
+          let randomX = randomInt(0, 10);
+          let spawnXs = [60, 110, 160, 220, 270, 320, 370, 420, 470, 520]
+              let newenemy = new enemyShip(spawnXs[randomX], 50,
+                30, 30, 30, 30);
+                newenemy.spawn(spawnXs[randomX], 50,
+                  30, 30, 30, 30);
+                  newenemy.drawSelf();
+                  enemyList.push(newenemy);
+        }
 
         function draw() {
+          //draw mothership
+          mothership.drawSelf();
+
           //draw main cannon
           cannon.drawSelf();
 
+          //draw active enemies
+          for (let i = 0; i < enemyList.length; i++) {
+            enemyList[i].drawSelf();
+          }
+
         }
 
 
-
+        // let testnum = 60;
         //initialize keypress handler
         //this is also basically the update() for ship
         document.addEventListener('keydown', (e) => {
-          ctx.fillStyle = 'white';
+          ctx.fillStyle = 'gray';
           switch (e.keyCode) {
             // case 38:
             // //up
@@ -167,6 +263,7 @@
               break;
             case 32:
                 //spacebar shoot
+                e.preventDefault();
                 let nb = new bullet(
                   cannon.posX + 5, cannon.posY, 10, 6, 12);
                   nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12);
@@ -174,6 +271,30 @@
                   bulletList.push(nb);
                 console.log(bulletList);
                 break;
+            //enemy spawn test
+            // case 90:
+            //   //test
+            //   if (enemyList.length < 10) {
+            //
+            //     let newenemy = new enemyShip(testnum, 30,
+            //       30, 30, 30, 30);
+            //       newenemy.spawn(testnum, 30,
+            //         30, 30, 30, 30);
+            //         newenemy.drawSelf();
+            //         enemyList.push(newenemy);
+            //   } else if (enemyList.length >= 10 && enemyList.length < 20) {
+            //     let newenemy = new enemyShip(testnum, 70,
+            //       30, 30, 30, 30);
+            //       newenemy.spawn(testnum, 70,
+            //         30, 30, 30, 30);
+            //         newenemy.drawSelf();
+            //         enemyList.push(newenemy);
+            //   }
+            //   console.log(enemyList);
+            //   testnum += 50;
+            //   if (testnum >= 540)
+            //   testnum = 60;
+            //   break;
             default:
 
           }
