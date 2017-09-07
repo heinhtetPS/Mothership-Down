@@ -219,7 +219,6 @@
               let forwardVelocity = 0;
               if (chancetoMoveForward >= 9) {
                 forwardVelocity = 30;
-                console.log(enemyList);
               }
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               ctx.fillStyle = "white";
@@ -309,7 +308,7 @@
               enemyList[i].moveVertical();
             } else {
               //get rid of enemy from list
-              enemyList[i].splice(i, 1);
+              enemyList.splice(i, 1);
             }
           }
         }
@@ -318,9 +317,9 @@
           if (enemyList.length < 12) {
             let randomX = randomInt(0, 10);
             let spawnXs = [60, 110, 160, 220, 270, 320, 370, 420, 470, 520]
-            let newenemy = new enemyShip(spawnXs[randomX], 50,
+            let newenemy = new enemyShip(spawnXs[randomX], 30,
               30, 30, 30, 30, "enemyShip");
-              newenemy.spawn(spawnXs[randomX], 50,
+              newenemy.spawn(spawnXs[randomX], 30,
                 30, 30, 30, 30, "enemyShip");
                 newenemy.drawSelf();
                 enemyList.push(newenemy);
@@ -398,6 +397,7 @@
         <div class="bg-cutter">
           <div id="canvas-bg"></div>
           <canvas id="canvas" height="400" width="600" tabindex='1'></canvas>
+          <!-- <canvas id="canvas-UI" height="400" width="600" tabindex='1'></canvas> -->
         </div>
       </div>
     </div>
