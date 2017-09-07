@@ -41,14 +41,13 @@ Main and only screen:
 - parallax stars background
 - cannon that can shoot bullets and move on x axis
 - particle system for generating explosions and bullets
-- enemy ships are on a grid,
 - ships appear and shoot bullets towards the bottom of screen
-- 2nd type of enemy ship can shoot rockets that do more dmg but can be shot down
 - add shield feature, can turn on or off
 
 ### Phase 2
 - Make Power distribution UI and beacon progress bar
 - Add the power and distribution system
+- 2nd type of enemy ship can shoot rockets that do more dmg but can be shot down
 - Add victory and defeat conditions
 
 ### Phase 3
