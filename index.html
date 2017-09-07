@@ -39,6 +39,7 @@
             posY: 350,
             width: 470,
             height: 100,
+            tag: "playerShip",
             drawSelf: function() {
               // ctx.fillStyle = "purple";
               // ctx.fillRect(this.posX, this.posY, this.width, this.height);
@@ -53,6 +54,7 @@
             posY: canvas.height - 70,
             width: 15,
             height: 30,
+            tag: "playerCannon",
             drawSelf: function() {
               ctx.fillStyle = "gray";
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
@@ -90,7 +92,7 @@
           window.bulletList = [];
           //list of enemies on screen
           window.enemyList = [];
-          //max should be
+          //max is currently 12
         }
         //end initialize --------------------------
 
@@ -108,6 +110,8 @@
             this.defaultWidth = 6;
             this.defaultHeight = 12;
             this.defaultVelocity = 5;
+            this.tag = "";
+            //decide the tag on spawn
 
             this.spawn = function(x, y, velocity, width, height) {
               this.posX = x;
@@ -125,6 +129,35 @@
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
             }
 
+            function checkIntersect(obj1, obj2) {
+              if (obj1.posX < obj2.posX + obj2.width &&
+                obj1.posX + obj1.width > obj2.posX &&
+                obj1.posY < obj2.posY + obj2.height &&
+                obj1.height + obj1.posY > obj2.posY) {
+                  return true;
+              } else {
+                return false;
+              }
+            }
+
+            this.checkCollision = function(otherObjects) {
+              if (this.alive) {
+
+                for (let i = 0; i < otherObjects.length; i++) {
+
+                  if (checkIntersect(this, otherObjects[i])) {
+                    if (otherObjects[i].tag === "enemyShip") {
+                      otherObjects[i].destroy();
+                      otherObjects.splice(i, 1);
+                      this.destroy();
+                    }
+
+                  }
+                }
+
+              }
+            };
+
             this.destroy = function() {
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               this.alive = false;
@@ -140,14 +173,16 @@
             this.defaultVelocityY = 20;
             this.defaultWidth = 30;
             this.defaultHeight = 30;
+            this.tag = "enemyShip";
 
-            this.spawn = function(x, y, velocityX, velocityY, width, height) {
+            this.spawn = function(x, y, velocityX, velocityY, width, height, tag) {
               this.posX = x;
               this.posY = y;
               this.velocityX = velocityX;
               this.velocityY = velocityY;
               this.width = width;
               this.height = height;
+              this.tag = tag;
               this.alive = true;
             }
 
@@ -191,6 +226,7 @@
               this.destroy();
             }
 
+
             this.destroy = function() {
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               this.alive = false;
@@ -206,7 +242,7 @@
 
         }
 
-        //COLLISION
+        //COLLISION & PROXIMITY
         function checkIntersect(obj1, obj2) {
           if (obj1.posX < obj2.posX + obj2.width &&
             obj1.posX + obj1.width > obj2.posX &&
@@ -235,6 +271,7 @@
                 ctx.fillStyle = "orange";
                 ctx.fillRect(bulletList[i].posX, bulletList[i].posY,
                   bulletList[i].width, bulletList[i].height)
+                bulletList[i].checkCollision(enemyList);
               } else {
                 //otherwise get rid of it
                 //splice removes from i position, 1 thing
@@ -264,9 +301,9 @@
             let randomX = randomInt(0, 10);
             let spawnXs = [60, 110, 160, 220, 270, 320, 370, 420, 470, 520]
             let newenemy = new enemyShip(spawnXs[randomX], 50,
-              30, 30, 30, 30);
+              30, 30, 30, 30, "enemyShip");
               newenemy.spawn(spawnXs[randomX], 50,
-                30, 30, 30, 30);
+                30, 30, 30, 30, "enemyShip");
                 newenemy.drawSelf();
                 enemyList.push(newenemy);
 
