@@ -26,20 +26,32 @@
           window.cannon = {
             posX: canvas.width/2,
             posY: canvas.height - 100,
+            width: 15,
+            height: 30,
             drawSelf: function() {
               ctx.fillStyle = "white";
-              ctx.fillRect(this.posX, this.posY, 15, 30);
+              ctx.fillRect(this.posX, this.posY, this.width, this.height);
             }
           };
 
+          //used with screen logic
+          window.screenResets = {
+            top: 0,
+            bottom: 400,
+            left: 0,
+            right: 600
+          }
+
           //list of bullets on screen
           window.bulletList = [];
+          //list of enemies on screen
+          window.enemyList = [];
         }
 
 
 
 
-        //initialize bullet
+        //main bullet script
         function bullet(x, y, velocity, width, height) {
             this.alive = false;
             this.spawn = function(x, y, velocity, width, height) {
@@ -59,8 +71,41 @@
             }
           }
 
+          //main enemy script
+          function enemyShip(x, y, velocityX, velocityY, width, height) {
+            this.alive = false;
+            this.defaultVelocityX = 20;
+            this.defaultVelocityY = 20;
+            this.defaultWidth = 30;
+            this.defaultHeight = 30;
+
+            this.spawn = function(x, y, velocityX, velocityY, width, height) {
+              this.posX = x;
+              this.posY = y;
+              this.velocityX = velocityX;
+              this.velocityY = velocityY;
+              this.width = width;
+              this.height = height;
+              this.alive = true;
+            }
+
+            this.drawSelf = function() {
+              ctx.clearRect(this.posX, this.posY, this.width, this.height);
+              ctx.fillStyle = "white";
+              ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            }
+
+          }
+
         function update() {
           updateBullets();
+        }
+
+        function cannonScreenResets() {
+          if (cannon.posX < window.screenResets.left)
+          cannon.posX = 580;
+          if (cannon.posX > window.screenResets.right)
+          cannon.posX = 0;
         }
 
 
@@ -81,18 +126,15 @@
           });
         }
 
+        //remove bullets from bulletlist
+
         function draw() {
           //draw main cannon
           cannon.drawSelf();
-          //each bullet draw itself
-          // for (let i = 0; i < bulletList.length; i++) {
-          //   bulletList[i].drawBullet();
-          // }
-
-
-
 
         }
+
+
 
         //initialize keypress handler
         //this is also basically the update() for ship
@@ -111,21 +153,23 @@
             //   break;
             case 37:
                 //left
-              ctx.clearRect(cannon.posX, cannon.posY, 15, 30);
+              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
               cannon.posX -= 20;
-              ctx.fillRect(cannon.posX, cannon.posY, 15, 30);
+              cannonScreenResets();
+              ctx.fillRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
               break;
             case 39:
                 //right
-              ctx.clearRect(cannon.posX, cannon.posY, 15, 30);
+              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
               cannon.posX += 20;
-              ctx.fillRect(cannon.posX, cannon.posY, 15, 30);
+              cannonScreenResets();
+              ctx.fillRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
               break;
             case 32:
                 //spacebar shoot
                 let nb = new bullet(
-                  cannon.posX, cannon.posY, 10, 6, 12);
-                  nb.spawn(cannon.posX, cannon.posY, 10, 6, 12);
+                  cannon.posX + 5, cannon.posY, 10, 6, 12);
+                  nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12);
                   nb.drawSelf();
                   bulletList.push(nb);
                 console.log(bulletList);
