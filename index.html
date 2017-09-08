@@ -249,6 +249,16 @@
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
             }
 
+            this.shoot = function() {
+              let nb = new bullet(
+                this.posX + 5, this.posY, 10, 6, 12);
+                nb.spawn(this.posX + 5, this.posY, 10, 6, 12, "enemy1");
+                nb.drawSelf();
+                bulletList.push(nb);
+                debugger
+              console.log(bulletList);
+            }
+
             this.screenResets = function() {
               if (this.posX < 60)
               this.posX = 60;
@@ -316,18 +326,22 @@
 
             if (bulletList[i].alive) {
               //if bullet is alive and still within play area...
-              if (bulletList[i].posY > 0) {
+              if (bulletList[i].posY > 0 && bulletList[i].posY < 400) {
                 ctx.clearRect(bulletList[i].posX, bulletList[i].posY,
-                  bulletList[i].width, bulletList[i].height)
-                bulletList[i].posY -= 5;
+                  bulletList[i].width, bulletList[i].height);
                 ctx.fillStyle = "orange";
+                  if (bulletList[i].tag === "player") {
+                    //check whether bullet is hitting enemy
+                    bulletList[i].posY -= 5;
+                    bulletList[i].checkCollision(enemyList);
+                  } else {
+                    //check if bullet is hitting player unit
+                    bulletList[i].posY += 2;
+                    bulletList[i].checkCollision(playerList);
+                  }
                 ctx.fillRect(bulletList[i].posX, bulletList[i].posY,
-                bulletList[i].width, bulletList[i].height)
-                if (bulletList[i].tag === "player") {
-                  bulletList[i].checkCollision(enemyList);
-                } else {
-                  bulletList[i].checkCollision(playerList);
-                }
+                bulletList[i].width, bulletList[i].height);
+
               } else {
                 //if pos is going off, delete it
                 //splice removes from i position, 1 thing
@@ -347,6 +361,7 @@
         function enemyUpdate() {
           for (let i = 0; i < enemyList.length; i++) {
             if (enemyList[i].alive) {
+              setTimeout(enemyList[i].shoot, randomInt(1000, 4000));
               enemyList[i].moveHorizontal();
               enemyList[i].moveVertical();
             } else {
