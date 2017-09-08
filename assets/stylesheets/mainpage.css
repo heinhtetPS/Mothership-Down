@@ -3,28 +3,51 @@
   background-color: gray;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
+  height: 100vh;
+}
+
+h1 {
+  font-family: 'Press Start 2P';
+  font-size: 40px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: -30px;
   margin-top: 10px;
-  height: 110vh;
+}
+
+.icons {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 10px;
+    margin-top: 5px;
+    height: 135px;
+    padding: 5px;
+    background-color: antiquewhite;
+    border-radius: 10px;
 }
 
 .game-viewport {
   width: 604px;
-  height: 400px;
+  height: 404px;
   display: flex;
   flex-direction: row;
-  position: relative;
-  overflow: hidden;
 
 }
 
-.bg-cutter {
+#linker:hover {
+  color: magenta;
+}
+
+/*.bg-cutter {
   width: 1200px;
   display: flex;
   flex-direction: row;
   position: relative;
   overflow: hidden;
-}
+}*/
 
 /*#canvas-bg {
   width: 1200px;

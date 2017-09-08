@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Mothership Down!</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="./assets/stylesheets/reset.css" />
     <link rel="stylesheet" type="text/css" href="./assets/stylesheets/mainpage.css" />
     <script>
@@ -18,6 +20,7 @@
         //custom interval updates
         window.setInterval(randomSpawn, 3000);
         window.setInterval(enemyUpdate, 500);
+        window.setInterval(enemyAttack, randomInt(2000, 6000));
 
 
 
@@ -210,7 +213,7 @@
               this.height = height;
               this.tag = tag;
               this.alive = true;
-
+              this.cooldown = false;
 
             }
 
@@ -244,7 +247,13 @@
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
             }
 
+            cooldownreset() {
+              this.cooldown = false;
+            }
+
             shoot(source) {
+              this.cooldown = true;
+              setTimeout(this.cooldownreset, randomInt(1000, 6000))
               let nb = new bullet(
                 source.posX + 5, source.posY, 10, 6, 12);
                 nb.spawn(source.posX + 7, source.posY + 28, 10, 6, 12, "enemy1");
@@ -271,9 +280,6 @@
             }
 
           }
-
-
-
 
 
           function shield() {
@@ -355,16 +361,23 @@
           }
 
         }
-        //this isn't even running;
         function enemyUpdate() {
           for (let i = 0; i < enemyList.length; i++) {
             if (enemyList[i].alive) {
-              setTimeout(enemyList[i].shoot(enemyList[i]), randomInt(2000, 8000));
+              // setTimeout(enemyList[i].shoot(enemyList[i]), randomInt(2000, 8000));
               enemyList[i].moveHorizontal();
               enemyList[i].moveVertical();
             } else {
               //get rid of enemy from list
               enemyList.splice(i, 1);
+            }
+          }
+        }
+
+        function enemyAttack() {
+          for (let i = 0; i < enemyList.length; i++) {
+            if (enemyList[i].alive && !enemyList[i].cooldown) {
+              enemyList[i].shoot(enemyList[i]);
             }
           }
         }
@@ -449,14 +462,20 @@
   </head>
   <body>
     <div class="content-container">
+      <h1>MOTHERSHIP DOWN</h1>
       <div class="game-viewport">
-        <!-- <div class="bg-cutter"> -->
-          <!-- <div id="canvas-bg"></div> -->
           <canvas id="canvas-BG" height="400" width="600"></canvas>
           <canvas id="canvas" height="400" width="600" tabindex='1'></canvas>
           <canvas id="canvas-UI" height="400" width="600"></canvas>
-        <!-- </div> -->
+
+      </div>
+      <div class="icons">
+        <a href="#"><i id="linker"class="fa fa-home fa-2x"></i></a>
+        <a href="#"><i id="linker"class="fa fa-linkedin fa-2x"></i></a>
+        <a href="#"><i id="linker"class="fa fa-github fa-2x"></i></a>
+        <a href="#"><i id="linker"class="fa fa-envelope fa-2x"></i></a>
       </div>
     </div>
+    <p>&copy; 2017 Hein Htet Pyi Soe. All Rights Reserved.</p>
   </body>
 </html>
