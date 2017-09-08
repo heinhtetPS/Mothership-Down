@@ -200,15 +200,8 @@
           }
 
           //main enemy script
-          function enemyShip(x, y, velocityX, velocityY, width, height) {
-            this.alive = false;
-            this.defaultVelocityX = 20;
-            this.defaultVelocityY = 20;
-            this.defaultWidth = 30;
-            this.defaultHeight = 30;
-            this.tag = "enemyShip";
-
-            this.spawn = function(x, y, velocityX, velocityY, width, height, tag) {
+          class enemyShip {
+            constructor(x, y, velocityX, velocityY, width, height, tag) {
               this.posX = x;
               this.posY = y;
               this.velocityX = velocityX;
@@ -217,15 +210,17 @@
               this.height = height;
               this.tag = tag;
               this.alive = true;
+
+
             }
 
-            this.drawSelf = function() {
+            drawSelf() {
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               ctx.fillStyle = "white";
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
             }
 
-            this.moveHorizontal = function() {
+            moveHorizontal() {
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               ctx.fillStyle = "white";
               if (randomInt(0,2) === 0) {
@@ -237,7 +232,7 @@
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
             }
 
-            this.moveVertical = function() {
+            moveVertical() {
               let chancetoMoveForward = randomInt(0,10);
               let forwardVelocity = 0;
               if (chancetoMoveForward >= 9) {
@@ -249,17 +244,16 @@
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
             }
 
-            this.shoot = function() {
+            shoot(source) {
               let nb = new bullet(
-                this.posX + 5, this.posY, 10, 6, 12);
-                nb.spawn(this.posX + 5, this.posY, 10, 6, 12, "enemy1");
+                source.posX + 5, source.posY, 10, 6, 12);
+                nb.spawn(source.posX + 7, source.posY + 28, 10, 6, 12, "enemy1");
                 nb.drawSelf();
                 bulletList.push(nb);
-                debugger
               console.log(bulletList);
             }
 
-            this.screenResets = function() {
+            screenResets() {
               if (this.posX < 60)
               this.posX = 60;
               if (this.posX > 520)
@@ -269,7 +263,7 @@
             }
 
 
-            this.destroy = function() {
+            destroy() {
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               this.alive = false;
               this.posX = -1000;
@@ -277,6 +271,10 @@
             }
 
           }
+
+
+
+
 
           function shield() {
             this.posX = 300;
@@ -361,7 +359,7 @@
         function enemyUpdate() {
           for (let i = 0; i < enemyList.length; i++) {
             if (enemyList[i].alive) {
-              setTimeout(enemyList[i].shoot, randomInt(1000, 4000));
+              setTimeout(enemyList[i].shoot(enemyList[i]), randomInt(2000, 8000));
               enemyList[i].moveHorizontal();
               enemyList[i].moveVertical();
             } else {
@@ -377,8 +375,6 @@
             let spawnXs = [60, 110, 160, 220, 270, 320, 370, 420, 470, 520]
             let newenemy = new enemyShip(spawnXs[randomX], 30,
               30, 30, 30, 30, "enemyShip");
-              newenemy.spawn(spawnXs[randomX], 30,
-                30, 30, 30, 30, "enemyShip");
                 newenemy.drawSelf();
                 enemyList.push(newenemy);
 
