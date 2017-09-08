@@ -10,8 +10,9 @@
 
 .game-viewport {
   width: 604px;
-  /*display: flex;
-  flex-direction: row;*/
+  height: 400px;
+  display: flex;
+  flex-direction: row;
   position: relative;
   overflow: hidden;
 
@@ -25,7 +26,7 @@
   overflow: hidden;
 }
 
-#canvas-bg {
+/*#canvas-bg {
   width: 1200px;
   height: 400px;
   background-image: url("../images/maxresdefault.jpg");
@@ -41,7 +42,7 @@
   100% {
     transform: translateX(33.3333%);
   }
-}
+}*/
 
 
 #canvas {

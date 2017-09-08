@@ -25,25 +25,47 @@
         function initialize() {
             //initialize canvas vars
           window.canvas = document.getElementById('canvas');
+          window.canvasBG = document.getElementById('canvas-BG');
           window.ctx = canvas.getContext('2d');
+          window.ctx_bg = canvasBG.getContext('2d');
+
 
           //initialize images
           window.imageRepo = new function() {
             this.mothershipImg = new Image();
             this.mothershipImg.src = "./assets/images/mainship.png";
+
+            this.spaceBG = new Image();
+            this.spaceBG.src = "./assets/images/maxresdefault.jpg";
+          }
+
+          window.parallax = {
+            posX: 0,
+            posY: 0,
+            width: 600,
+            height: 400,
+            speed: 0.2,
+            drawSelf: function() {
+              ctx_bg.clearRect(this.posX, this.posY, this.width, this.height);
+              this.posX += this.speed;
+              if (this.posX > this.width) { this.posX = 0; }
+              if (this.posX > 0) { ctx_bg.drawImage(imageRepo.spaceBG,
+                this.posX - this.width + 1, this.posY, this.width, this.height); }
+              ctx_bg.drawImage(imageRepo.spaceBG,
+              this.posX, this.posY, this.width, this.height)
+            }
+
           }
 
           //initialize mothership
           window.mothership = {
             posX: 60,
-            posY: 355,
+            posY: 318,
             width: 470,
-            height: 100,
+            height: 200,
             tag: "playerShip",
             hp: 100,
             drawSelf: function() {
-              // ctx.fillStyle = "purple";
-              // ctx.fillRect(this.posX, this.posY, this.width, this.height);
               ctx.drawImage(imageRepo.mothershipImg,
               this.posX, this.posY, this.width, this.height)
             }
@@ -74,13 +96,6 @@
             return Math.floor(Math.random() * (max - min)) + min;
           }
 
-          //initialize spawner
-          window.spawner = {
-            // spawnEnemy: enemyShip.spawn(window.randomInt(30, 570), window.randomInt(30, 200)
-            // enemyShip.defaultVelocityX, enemyShip.defaultVelocityY,
-            // enemyShip.defaultWidth, enemyShip.defaultHeight),
-
-          };
 
           //used with screen logic
           window.screenResets = {
@@ -328,6 +343,8 @@
         }
 
         function draw() {
+          //draw bg
+          parallax.drawSelf();
           //draw mothership
           mothership.drawSelf();
 
@@ -394,11 +411,12 @@
   <body>
     <div class="content-container">
       <div class="game-viewport">
-        <div class="bg-cutter">
-          <div id="canvas-bg"></div>
+        <!-- <div class="bg-cutter"> -->
+          <!-- <div id="canvas-bg"></div> -->
+          <canvas id="canvas-BG" height="400" width="600" tabindex='1'></canvas>
           <canvas id="canvas" height="400" width="600" tabindex='1'></canvas>
-          <!-- <canvas id="canvas-UI" height="400" width="600" tabindex='1'></canvas> -->
-        </div>
+
+        <!-- </div> -->
       </div>
     </div>
   </body>
