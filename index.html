@@ -26,8 +26,10 @@
             //initialize canvas vars
           window.canvas = document.getElementById('canvas');
           window.canvasBG = document.getElementById('canvas-BG');
+          window.canvasUI = document.getElementById('canvas-UI');
           window.ctx = canvas.getContext('2d');
           window.ctx_bg = canvasBG.getContext('2d');
+          window.ctx_ui = canvasUI.getContext('2d');
 
 
           //initialize images
@@ -37,6 +39,12 @@
 
             this.spaceBG = new Image();
             this.spaceBG.src = "./assets/images/maxresdefault.jpg";
+
+            this.healthbar = new Image();
+
+            this.beacon = new Image();
+
+            this.powerPanel = new Image();
           }
 
           window.parallax = {
@@ -260,6 +268,26 @@
 
           }
 
+          function shield() {
+            this.posX = 300;
+            this.posY = 300;
+            this.alive = false;
+            this.duration = 5;
+
+            this.spawn = function() {
+
+            }
+
+            this.drawSelf = function() {
+
+            }
+
+            this.disable = function() {
+              //clear and reset duration
+              this.alive = false;
+            }
+          }
+
         function update() {
           if (bulletList.length > 0)
           updateBullets();
@@ -413,9 +441,9 @@
       <div class="game-viewport">
         <!-- <div class="bg-cutter"> -->
           <!-- <div id="canvas-bg"></div> -->
-          <canvas id="canvas-BG" height="400" width="600" tabindex='1'></canvas>
+          <canvas id="canvas-BG" height="400" width="600"></canvas>
           <canvas id="canvas" height="400" width="600" tabindex='1'></canvas>
-
+          <canvas id="canvas-UI" height="400" width="600"></canvas>
         <!-- </div> -->
       </div>
     </div>

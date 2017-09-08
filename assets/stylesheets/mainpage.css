@@ -51,3 +51,15 @@
   border: 2px solid white;
   position: absolute;
 }
+#canvas-UI {
+  max-width: 600px;
+  max-height: 400px;
+  border: 2px solid white;
+  position: absolute;
+}
+#canvas-BG {
+  max-width: 600px;
+  max-height: 400px;
+  border: 2px solid white;
+  position: absolute;
+}
