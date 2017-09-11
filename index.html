@@ -20,7 +20,7 @@
         //custom interval updates
         window.setInterval(randomSpawn, 3000);
         window.setInterval(enemyUpdate, 500);
-        window.setInterval(enemyAttack, randomInt(2000, 6000));
+        window.setInterval(enemyAttack, randomInt(500, 4000));
 
 
 
@@ -42,6 +42,9 @@
 
             this.spaceBG = new Image();
             this.spaceBG.src = "./assets/images/maxresdefault.jpg";
+
+            this.shieldSheet= new Image();
+            this.shieldSheet.src = "./assets/images/shieldsheet.png";
 
             this.healthbar = new Image();
 
@@ -78,6 +81,10 @@
             hp: 100,
             drawSelf: function() {
               ctx.drawImage(imageRepo.mothershipImg,
+              this.posX, this.posY, this.width, this.height)
+            },
+            drawShield: function() {
+              ctx.drawImage(imageRepo.shieldSheet,
               this.posX, this.posY, this.width, this.height)
             }
           }
@@ -215,6 +222,9 @@
               this.alive = true;
               this.cooldown = false;
 
+
+              this.shoot = this.shoot.bind(this);
+              this.cooldownreset = this.cooldownreset.bind(this);
             }
 
             drawSelf() {
@@ -251,14 +261,19 @@
               this.cooldown = false;
             }
 
+
             shoot(source) {
-              this.cooldown = true;
-              setTimeout(this.cooldownreset, randomInt(1000, 6000))
-              let nb = new bullet(
-                source.posX + 5, source.posY, 10, 6, 12);
-                nb.spawn(source.posX + 7, source.posY + 28, 10, 6, 12, "enemy1");
-                nb.drawSelf();
-                bulletList.push(nb);
+              if (this.cooldown) {
+                let cooldowntimer = randomInt(500, 8000);
+                setTimeout(this.cooldownreset, cooldowntimer)
+              } else {
+                let nb = new bullet(
+                  source.posX + 5, source.posY, 10, 6, 12);
+                  nb.spawn(source.posX + 7, source.posY + 28, 10, 6, 12, "enemy1");
+                  nb.drawSelf();
+                  bulletList.push(nb);
+                  this.cooldown = true;
+              }
               console.log(bulletList);
             }
 
@@ -364,7 +379,6 @@
         function enemyUpdate() {
           for (let i = 0; i < enemyList.length; i++) {
             if (enemyList[i].alive) {
-              // setTimeout(enemyList[i].shoot(enemyList[i]), randomInt(2000, 8000));
               enemyList[i].moveHorizontal();
               enemyList[i].moveVertical();
             } else {
@@ -376,9 +390,10 @@
 
         function enemyAttack() {
           for (let i = 0; i < enemyList.length; i++) {
-            if (enemyList[i].alive && !enemyList[i].cooldown) {
+            if (enemyList[i].alive) {
               enemyList[i].shoot(enemyList[i]);
             }
+
           }
         }
 
@@ -399,6 +414,7 @@
           parallax.drawSelf();
           //draw mothership
           mothership.drawSelf();
+          mothership.drawShield();
 
           //draw main cannon
           cannon.drawSelf();
