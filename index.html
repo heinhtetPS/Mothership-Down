@@ -13,17 +13,26 @@
         //run once
         initialize();
 
-        //run every frame
-        window.setInterval(update, 16);
-        window.setInterval(draw, 16);
 
-        //custom interval updates
-        window.setInterval(randomSpawn, 3000);
-        window.setInterval(enemyUpdate, 500);
-        window.setInterval(enemyAttack, randomInt(500, 4000));
+        if (!window.playing) {
+          ctx_ui.fillStyle = "White";
+          ctx_ui.font = "30px Calibri";
+          ctx_ui.fillText("Instructions:", 50, 100);
+          ctx_ui.font = "20px Calibri";
+          ctx_ui.fillText("Use arrow keys to move cannon's position.", 50, 130);
+          ctx_ui.fillText("Shoot puny Earthlings with spacebar.", 50, 150);
+          ctx_ui.fillText("Press Enter to Begin.", 50, 170);
+          //press enter event
+          document.addEventListener('keydown', (e) => {
 
-
-
+            if (e.keyCode === 13) {
+              e.preventDefault();
+              ctx_ui.clearRect(0,0, 600, 400);
+              window.playing = true;
+              setAllIntervals();
+            }
+          });
+        }
 
         function initialize() {
             //initialize canvas vars
@@ -33,7 +42,6 @@
           window.ctx = canvas.getContext('2d');
           window.ctx_bg = canvasBG.getContext('2d');
           window.ctx_ui = canvasUI.getContext('2d');
-
 
           //initialize images
           window.imageRepo = new function() {
@@ -78,7 +86,8 @@
             width: 470,
             height: 200,
             tag: "playerShip",
-            hp: 100,
+            hullHP: 100,
+            shieldHP: 100,
             drawSelf: function() {
               ctx.drawImage(imageRepo.mothershipImg,
               this.posX, this.posY, this.width, this.height)
@@ -101,6 +110,12 @@
             drawSelf: function() {
               ctx.fillStyle = "gray";
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            },
+            screenResets: function() {
+              if (cannon.posX < window.screenResets.left)
+              cannon.posX = 580;
+              if (cannon.posX > window.screenResets.right)
+              cannon.posX = 0;
             }
           };
 
@@ -133,15 +148,7 @@
           window.playerList = [];
           playerList.push(cannon);
           playerList.push(mothership);
-        }
-        //end initialize --------------------------
-
-
-        function cannonScreenResets() {
-          if (cannon.posX < window.screenResets.left)
-          cannon.posX = 580;
-          if (cannon.posX > window.screenResets.right)
-          cannon.posX = 0;
+          window.playing = false;
         }
 
         //main bullet script
@@ -297,184 +304,156 @@
 
           }
 
+          //if bulletList is not empty, run this every frame
+          //this is problematic because updating the pos needs to be seperated from drawing
+          //if they're together, bullet stops executing velocity before it can become invalid
+          //and undrawable
+          function updateBullets() {
+            for (let i = 0; i < bulletList.length; i++) {
 
-          function shield() {
-            this.posX = 300;
-            this.posY = 300;
-            this.alive = false;
-            this.duration = 5;
-
-            this.spawn = function() {
-
-            }
-
-            this.drawSelf = function() {
-
-            }
-
-            this.disable = function() {
-              //clear and reset duration
-              this.alive = false;
-            }
-          }
-
-        function update() {
-          if (bulletList.length > 0)
-          updateBullets();
-
-        }
-
-        //COLLISION & PROXIMITY
-        function checkIntersect(obj1, obj2) {
-          if (obj1.posX < obj2.posX + obj2.width &&
-            obj1.posX + obj1.width > obj2.posX &&
-            obj1.posY < obj2.posY + obj2.height &&
-            obj1.height + obj1.posY > obj2.posY) {
-              return true;
-          } else {
-            return false;
-          }
-        }
-
-
-        //if bulletList is not empty, run this every frame
-        //this is problematic because updating the pos needs to be seperated from drawing
-        //if they're together, bullet stops executing velocity before it can become invalid
-        //and undrawable
-        function updateBullets() {
-          for (let i = 0; i < bulletList.length; i++) {
-
-            if (bulletList[i].alive) {
-              //if bullet is alive and still within play area...
-              if (bulletList[i].posY > 0 && bulletList[i].posY < 400) {
-                ctx.clearRect(bulletList[i].posX, bulletList[i].posY,
+              if (bulletList[i].alive) {
+                //if bullet is alive and still within play area...
+                if (bulletList[i].posY > 0 && bulletList[i].posY < 400) {
+                  ctx.clearRect(bulletList[i].posX, bulletList[i].posY,
+                    bulletList[i].width, bulletList[i].height);
+                  ctx.fillStyle = "orange";
+                    if (bulletList[i].tag === "player") {
+                      //check whether bullet is hitting enemy
+                      bulletList[i].posY -= 5;
+                      bulletList[i].checkCollision(enemyList);
+                    } else {
+                      //check if bullet is hitting player unit
+                      bulletList[i].posY += 2;
+                      bulletList[i].checkCollision(playerList);
+                    }
+                  ctx.fillRect(bulletList[i].posX, bulletList[i].posY,
                   bulletList[i].width, bulletList[i].height);
-                ctx.fillStyle = "orange";
-                  if (bulletList[i].tag === "player") {
-                    //check whether bullet is hitting enemy
-                    bulletList[i].posY -= 5;
-                    bulletList[i].checkCollision(enemyList);
-                  } else {
-                    //check if bullet is hitting player unit
-                    bulletList[i].posY += 2;
-                    bulletList[i].checkCollision(playerList);
-                  }
-                ctx.fillRect(bulletList[i].posX, bulletList[i].posY,
-                bulletList[i].width, bulletList[i].height);
 
+                } else {
+                  //if pos is going off, delete it
+                  //splice removes from i position, 1 thing
+                  bulletList[i].alive = false;
+                  bulletList[i].destroy();
+                  bulletList.splice(i, 1);
+                }
               } else {
-                //if pos is going off, delete it
-                //splice removes from i position, 1 thing
-                bulletList[i].alive = false;
+                //if its in the list but not alive...
                 bulletList[i].destroy();
                 bulletList.splice(i, 1);
               }
-            } else {
-              //if its in the list but not alive...
-              bulletList[i].destroy();
-              bulletList.splice(i, 1);
-            }
-          }
-
-        }
-        function enemyUpdate() {
-          for (let i = 0; i < enemyList.length; i++) {
-            if (enemyList[i].alive) {
-              enemyList[i].moveHorizontal();
-              enemyList[i].moveVertical();
-            } else {
-              //get rid of enemy from list
-              enemyList.splice(i, 1);
-            }
-          }
-        }
-
-        function enemyAttack() {
-          for (let i = 0; i < enemyList.length; i++) {
-            if (enemyList[i].alive) {
-              enemyList[i].shoot(enemyList[i]);
             }
 
           }
-        }
-
-        function randomSpawn() {
-          if (enemyList.length < 12) {
-            let randomX = randomInt(0, 10);
-            let spawnXs = [60, 110, 160, 220, 270, 320, 370, 420, 470, 520]
-            let newenemy = new enemyShip(spawnXs[randomX], 30,
-              30, 30, 30, 30, "enemyShip");
-                newenemy.drawSelf();
-                enemyList.push(newenemy);
-
-          }
-        }
-
-        function draw() {
-          //draw bg
-          parallax.drawSelf();
-          //draw mothership
-          mothership.drawSelf();
-          mothership.drawShield();
-
-          //draw main cannon
-          cannon.drawSelf();
-
-          //draw active enemies
-          for (let i = 0; i < enemyList.length; i++) {
-            enemyList[i].drawSelf();
+          function enemyUpdate() {
+            for (let i = 0; i < enemyList.length; i++) {
+              if (enemyList[i].alive) {
+                enemyList[i].moveHorizontal();
+                enemyList[i].moveVertical();
+              } else {
+                //get rid of enemy from list
+                enemyList.splice(i, 1);
+              }
+            }
           }
 
+          function enemyAttack() {
+            for (let i = 0; i < enemyList.length; i++) {
+              if (enemyList[i].alive) {
+                enemyList[i].shoot(enemyList[i]);
+              }
+
+            }
+          }
+
+          function randomSpawn() {
+            if (enemyList.length < 12) {
+              let randomX = randomInt(0, 10);
+              let spawnXs = [60, 110, 160, 220, 270, 320, 370, 420, 470, 520]
+              let newenemy = new enemyShip(spawnXs[randomX], 30,
+                30, 30, 30, 30, "enemyShip");
+                  newenemy.drawSelf();
+                  enemyList.push(newenemy);
+
+            }
+          }
+        //end initialize --------------------------
+        function setAllIntervals() {
+          // run every frame
+          window.setInterval(update, 16);
+          window.setInterval(draw, 16);
+
+          //custom interval updates
+          window.setInterval(randomSpawn, 3000);
+          window.setInterval(enemyUpdate, 500);
+          window.setInterval(enemyAttack, randomInt(500, 4000));
+
         }
 
+        if (window.playing) {
 
-        // let testnum = 60;
-        //initialize keypress handler
-        //this is also basically the update() for ship
-        document.addEventListener('keydown', (e) => {
-          ctx.fillStyle = 'gray';
-          switch (e.keyCode) {
-            // case 38:
-            // //up
-            //   y -= 1;
-            //   ctx.fillRect(x, y, 20, 20);
-            //   break;
-            // case 40:
-            //   //down
-            //   y += 1;
-            //   ctx.fillRect(x, y, 20, 20);
-            //   break;
-            case 37:
-                //left
+
+          function update() {
+            if (bulletList.length > 0)
+            updateBullets();
+            console.log("continuous updates");
+          }
+
+
+
+          function draw() {
+            //draw bg
+            parallax.drawSelf();
+            //draw mothership
+            mothership.drawSelf();
+            mothership.drawShield();
+
+            //draw main cannon
+            cannon.drawSelf();
+
+            //draw active enemies
+            for (let i = 0; i < enemyList.length; i++) {
+              enemyList[i].drawSelf();
+            }
+            console.log("continuous draws");
+          }
+          //keypress handler
+          //this is also basically the update() for ship
+          document.addEventListener('keydown', (e) => {
+            ctx.fillStyle = 'gray';
+            switch (e.keyCode) {
+
+              case 37:
+              //left
               ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
               cannon.posX -= 20;
-              cannonScreenResets();
+              cannon.screenResets();
               ctx.fillRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
               break;
-            case 39:
-                //right
+              case 39:
+              //right
               ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
               cannon.posX += 20;
-              cannonScreenResets();
+              cannon.screenResets();
               ctx.fillRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
               break;
-            case 32:
-                //spacebar shoot
-                e.preventDefault();
-                let nb = new bullet(
-                  cannon.posX + 5, cannon.posY, 10, 6, 12);
-                  nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12, "player");
-                  nb.drawSelf();
-                  bulletList.push(nb);
-                console.log(bulletList);
-                break;
+              case 32:
+              //spacebar shoot
+              e.preventDefault();
+              let nb = new bullet(
+              cannon.posX + 5, cannon.posY, 10, 6, 12);
+              nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12, "player");
+              nb.drawSelf();
+              bulletList.push(nb);
+              console.log(bulletList);
+              break;
+              //add another case for pause if time allows
+              default:
+            }
+          })
 
-            default:
+        }//end of window.playing
 
-          }
-        })
-
-      })
+      })//end of DOMContentLoaded
     </script>
   </head>
   <body>

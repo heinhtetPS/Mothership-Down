@@ -29,6 +29,10 @@ h1 {
     border-radius: 10px;
 }
 
+#linker {
+  cursor: pointer;
+}
+
 .game-viewport {
   width: 604px;
   height: 404px;
