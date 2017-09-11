@@ -61,66 +61,6 @@
             this.powerPanel = new Image();
           }
 
-          window.parallax = {
-            posX: 0,
-            posY: 0,
-            width: 600,
-            height: 400,
-            speed: 0.2,
-            drawSelf: function() {
-              ctx_bg.clearRect(this.posX, this.posY, this.width, this.height);
-              this.posX += this.speed;
-              if (this.posX > this.width) { this.posX = 0; }
-              if (this.posX > 0) { ctx_bg.drawImage(imageRepo.spaceBG,
-                this.posX - this.width + 1, this.posY, this.width, this.height); }
-              ctx_bg.drawImage(imageRepo.spaceBG,
-              this.posX, this.posY, this.width, this.height)
-            }
-
-          }
-
-          //initialize mothership
-          window.mothership = {
-            posX: 60,
-            posY: 318,
-            width: 470,
-            height: 200,
-            tag: "playerShip",
-            hullHP: 100,
-            shieldHP: 100,
-            drawSelf: function() {
-              ctx.drawImage(imageRepo.mothershipImg,
-              this.posX, this.posY, this.width, this.height)
-            },
-            drawShield: function() {
-              ctx.drawImage(imageRepo.shieldSheet,
-              0, 0, 300, 100,
-              this.posX - 20, this.posY - 60, this.width, this.height)
-            }
-          }
-
-          //initialize cannon vars
-          window.cannon = {
-            posX: canvas.width/2,
-            posY: canvas.height - 70,
-            width: 15,
-            height: 30,
-            hp: 10,
-            tag: "playerCannon",
-            drawSelf: function() {
-              ctx.fillStyle = "gray";
-              ctx.fillRect(this.posX, this.posY, this.width, this.height);
-            },
-            screenResets: function() {
-              if (cannon.posX < window.screenResets.left)
-              cannon.posX = 580;
-              if (cannon.posX > window.screenResets.right)
-              cannon.posX = 0;
-            }
-          };
-
-
-
           //helper methods-----------------------
 
           //max is not included
@@ -129,8 +69,6 @@
             max = Math.floor(max);
             return Math.floor(Math.random() * (max - min)) + min;
           }
-
-
           //used with screen logic
           window.screenResets = {
             top: 0,
@@ -138,7 +76,6 @@
             left: 0,
             right: 600
           }
-
           //list of bullets on screen
           window.bulletList = [];
           //list of enemies on screen
@@ -146,9 +83,70 @@
           window.enemyList = [];
           //List of player cannons and mothership
           window.playerList = [];
-          playerList.push(cannon);
-          playerList.push(mothership);
           window.playing = false;
+        }//end of initialize
+
+        //initialize mothership
+        window.mothership = {
+          posX: 60,
+          posY: 318,
+          width: 470,
+          height: 200,
+          tag: "playerShip",
+          hullHP: 100,
+          shieldHP: 100,
+          drawSelf: function() {
+            ctx.drawImage(imageRepo.mothershipImg,
+            this.posX, this.posY, this.width, this.height)
+          },
+          drawShield: function() {
+            ctx.drawImage(imageRepo.shieldSheet,
+            0, 0, 300, 100,
+            this.posX - 20, this.posY - 60, this.width, this.height)
+          }
+        }
+        playerList.push(mothership);
+
+        //initialize cannon vars
+        window.cannon = {
+          posX: canvas.width/2,
+          posY: canvas.height - 70,
+          width: 15,
+          height: 30,
+          hp: 10,
+          tag: "playerCannon",
+          drawSelf: function() {
+            ctx.fillStyle = "gray";
+            ctx.fillRect(this.posX, this.posY, this.width, this.height);
+          },
+          screenResets: function() {
+            if (cannon.posX < window.screenResets.left)
+            cannon.posX = 580;
+            if (cannon.posX > window.screenResets.right)
+            cannon.posX = 0;
+          }
+        };
+        playerList.push(cannon);
+
+        class Parallax {
+          constructor() {
+            this.posX = 0;
+            this.posY = 0;
+            this.width = 600;
+            this.height = 400;
+            this.speed = 0.2;
+            this.drawSelf = this.drawSelf.bind(this);
+          }
+
+          drawSelf() {
+            ctx_bg.clearRect(this.posX, this.posY, this.width, this.height);
+            this.posX += this.speed;
+            if (this.posX > this.width) { this.posX = 0; }
+            if (this.posX > 0) { ctx_bg.drawImage(imageRepo.spaceBG,
+              this.posX - this.width + 1, this.posY, this.width, this.height); }
+            ctx_bg.drawImage(imageRepo.spaceBG,
+            this.posX, this.posY, this.width, this.height)
+          }
         }
 
         //main bullet script
@@ -302,12 +300,8 @@
               this.posY = -1000;
             }
 
-          }
+          }//end of enemy ship
 
-          //if bulletList is not empty, run this every frame
-          //this is problematic because updating the pos needs to be seperated from drawing
-          //if they're together, bullet stops executing velocity before it can become invalid
-          //and undrawable
           function updateBullets() {
             for (let i = 0; i < bulletList.length; i++) {
 
@@ -344,6 +338,7 @@
             }
 
           }
+
           function enemyUpdate() {
             for (let i = 0; i < enemyList.length; i++) {
               if (enemyList[i].alive) {
@@ -376,29 +371,32 @@
 
             }
           }
-        //end initialize --------------------------
         function setAllIntervals() {
           // run every frame
-          window.setInterval(update, 16);
-          window.setInterval(draw, 16);
+
 
           //custom interval updates
+
+          window.setInterval(updateBullets, 16);
           window.setInterval(randomSpawn, 3000);
           window.setInterval(enemyUpdate, 500);
           window.setInterval(enemyAttack, randomInt(500, 4000));
 
+          //draw
+          const bg = new Parallax();
+          window.setInterval(bg.drawSelf, 16);
+          // window.setInterval( () => {
+          //   //draw bg
+          //   parallax.drawSelf;
+          //   //draw mothership
+          //   mothership.drawSelf;
+          //   mothership.drawShield;
+          //
+          //   //draw main cannon
+          //   cannon.drawSelf;
+          // }, 16);
+
         }
-
-        if (window.playing) {
-
-
-          function update() {
-            if (bulletList.length > 0)
-            updateBullets();
-            console.log("continuous updates");
-          }
-
-
 
           function draw() {
             //draw bg
@@ -411,9 +409,9 @@
             cannon.drawSelf();
 
             //draw active enemies
-            for (let i = 0; i < enemyList.length; i++) {
-              enemyList[i].drawSelf();
-            }
+            // for (let i = 0; i < enemyList.length; i++) {
+            //   enemyList[i].drawSelf();
+            // }
             console.log("continuous draws");
           }
           //keypress handler
@@ -451,7 +449,7 @@
             }
           })
 
-        }//end of window.playing
+
 
       })//end of DOMContentLoaded
     </script>
