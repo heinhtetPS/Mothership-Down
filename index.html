@@ -13,27 +13,6 @@
         //run once
         initialize();
 
-
-        if (!window.playing) {
-          ctx_ui.fillStyle = "White";
-          ctx_ui.font = "30px Calibri";
-          ctx_ui.fillText("Instructions:", 50, 100);
-          ctx_ui.font = "20px Calibri";
-          ctx_ui.fillText("Use arrow keys to move cannon's position.", 50, 130);
-          ctx_ui.fillText("Shoot puny Earthlings with spacebar.", 50, 150);
-          ctx_ui.fillText("Press Enter to Begin.", 50, 170);
-          //press enter event
-          document.addEventListener('keydown', (e) => {
-
-            if (e.keyCode === 13) {
-              e.preventDefault();
-              ctx_ui.clearRect(0,0, 600, 400);
-              window.playing = true;
-              setAllIntervals();
-            }
-          });
-        }
-
         function initialize() {
             //initialize canvas vars
           window.canvas = document.getElementById('canvas');
@@ -45,21 +24,40 @@
 
           //initialize images
           window.imageRepo = new function() {
+
+            this.allimages = 3;
+            this.loaded = 0;
             this.mothershipImg = new Image();
             this.mothershipImg.src = "./assets/images/mainship.png";
+            this.mothershipImg.onload = () => {this.loaded++;}
 
             this.spaceBG = new Image();
             this.spaceBG.src = "./assets/images/maxresdefault.jpg";
+            this.spaceBG.onload = () => {this.loaded++;}
 
             this.shieldSheet= new Image();
             this.shieldSheet.src = "./assets/images/shieldsheet.png";
+
+            this.arrows = new Image();
+            this.arrows.src = "./assets/images/arrows.png";
+            this.arrows.onload = () => {this.loaded++;}
+
+            this.spacebar = new Image();
+            this.spacebar.src = "./assets/images/spacebar.png";
 
             this.healthbar = new Image();
 
             this.beacon = new Image();
 
+            // function imageLoaded() {
+            //   numLoaded++;
+            //   if (numLoaded === numImages) {
+            //
+            //   }
+            // }
             this.powerPanel = new Image();
-          }
+
+          }//end of image repo
 
           //helper methods-----------------------
 
@@ -86,7 +84,39 @@
           window.playing = false;
         }//end of initialize
 
-        //initialize mothership
+        if (!window.playing) {
+          ctx_bg.fillRect(0,0,600,400);
+          ctx_ui.fillStyle = "White";
+          ctx_ui.font = "30px Calibri";
+          ctx_ui.fillText("Instructions:", 50, 50);
+          ctx_ui.font = "20px Calibri";
+          ctx_ui.fillText("Use arrow keys to move cannon's position.", 50, 80);
+          ctx_ui.fillText("Shoot puny Earthlings with spacebar.", 50, 110);
+          ctx_ui.fillText("Press Enter to Begin.", 50, 230);
+
+          ctx_ui.drawImage(imageRepo.arrows,
+          100, 160, 50, 50);
+          //problem: This runs before the image is loaded
+          console.log("just passed the arrow draw line");
+          // ctx_ui.fillRect(100,160,50,50);
+
+          //press enter event
+          document.addEventListener('keydown', (e) => {
+
+            if (e.keyCode === 13) {
+              e.preventDefault();
+              ctx_ui.clearRect(0,0, 600, 400);
+              window.playing = true;
+              setAllIntervals();
+            }
+          });
+        }
+
+
+
+
+
+        //mothership def
         class Mothership {
           constructor() {
             this.posX = 60;
@@ -102,18 +132,21 @@
           }
 
           drawSelf() {
-            ctx.drawImage(imageRepo.mothershipImg,
-            this.posX, this.posY, this.width, this.height)
+            // ctx.drawImage(imageRepo.mothershipImg,
+            // this.posX, this.posY, this.width, this.height);
+            ctx.fillStyle = "purple";
+            ctx.fillRect(this.posX, this.posY, this.width, this.height);
           }
 
           drawShield() {
-            ctx.drawImage(imageRepo.shieldSheet,
-            0, 0, 300, 100,
-            this.posX - 20, this.posY - 60, this.width, this.height)
+            // ctx.drawImage(imageRepo.shieldSheet,
+            // 0, 0, 300, 100,
+            // this.posX - 20, this.posY - 60, this.width, this.height);
+            ctx.fillStyle = "yellow";
+            ctx.fillRect(this.posX - 20, this.posY - 60, this.width, this.height);
           }
         }
-        const mothership = new Mothership();
-        playerList.push(mothership);
+
 
         //initialize cannon vars
         class Cannon {
@@ -212,7 +245,8 @@
                       otherObjects.splice(i, 1);
                       this.destroy();
                     } else {
-                      otherObjects[i].hp -= 10;
+                      otherObjects[i].shieldHP -= 10;
+                      console.log(otherObjects[i].shieldHP);
                       this.destroy();
                     }
 
@@ -295,7 +329,7 @@
                   bulletList.push(nb);
                   this.cooldown = true;
               }
-              console.log(bulletList);
+              // console.log(bulletList);
             }
 
             screenResets() {
@@ -387,24 +421,26 @@
             }
           }
         function setAllIntervals() {
-          // run every frame
-
-
-          //custom interval updates
-
+          //update intervals
           window.setInterval(updateBullets, 16);
           window.setInterval(randomSpawn, 3000);
           window.setInterval(enemyUpdate, 500);
           window.setInterval(enemyAttack, randomInt(500, 5000));
 
-          //draw
-          const bg = new Parallax();
-          window.setInterval(bg.drawSelf, 16);
-
-          //player region
+          //draw player stuff
+          const mothership = new Mothership();
+          playerList.push(mothership);
+          //although I make them all rect, the ship & shield still don't work
           window.setInterval(mothership.drawSelf, 16);
           window.setInterval(mothership.drawShield, 16);
           window.setInterval(cannon.drawSelf, 16);
+
+          //draw intervals
+          //draw bg
+          const bg = new Parallax();
+          window.setInterval(bg.drawSelf, 16);
+
+
 
         }
 
@@ -436,7 +472,7 @@
               nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12, "player");
               nb.drawSelf();
               bulletList.push(nb);
-              console.log(bulletList);
+              // console.log(bulletList);
               break;
               //add another case for pause if time allows
               default:
@@ -458,10 +494,10 @@
 
       </div>
       <div class="icons">
-        <a href="#"><i id="linker"class="fa fa-home fa-2x"></i></a>
-        <a href="#"><i id="linker"class="fa fa-linkedin fa-2x"></i></a>
-        <a href="#"><i id="linker"class="fa fa-github fa-2x"></i></a>
-        <a href="#"><i id="linker"class="fa fa-envelope fa-2x"></i></a>
+        <a href="https://heinhtetps.github.io/"><i id="linker"class="fa fa-home fa-2x"></i></a>
+        <a href="https://www.linkedin.com/in/heinhtetps/"><i id="linker"class="fa fa-linkedin fa-2x"></i></a>
+        <a href="https://github.com/heinhtetPS"><i id="linker"class="fa fa-github fa-2x"></i></a>
+        <a href="mailto: heinhtet.pyisoe@gmail.com"><i id="linker"class="fa fa-envelope fa-2x"></i></a>
       </div>
     </div>
     <p>&copy; 2017 Hein Htet Pyi Soe. All Rights Reserved.</p>

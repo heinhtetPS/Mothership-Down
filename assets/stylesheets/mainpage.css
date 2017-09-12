@@ -1,6 +1,7 @@
 .content-container {
   border: 1px dashed black;
-  background-color: gray;
+  background-image: url(../../assets/images/splash.jpg);
+  background-size: 720px 500px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -10,12 +11,70 @@
 
 h1 {
   font-family: 'Press Start 2P';
+  color: magenta;
   font-size: 40px;
   width: 100%;
   text-align: center;
   margin-bottom: -30px;
   margin-top: 10px;
+   -webkit-animation:colorchange 25s infinite alternate;
 }
+
+@-webkit-keyframes colorchange {
+      0% {
+
+        color: white;
+      }
+
+      5% {
+
+        color: black;
+      }
+
+      20% {
+
+        color: crimson;
+      }
+
+      30% {
+
+        color: tomato;
+      }
+
+      40% {
+
+        color: #d35400;
+      }
+
+      50% {
+
+        color: #34495e;
+      }
+
+      60% {
+
+        color: tomato;
+      }
+
+      70% {
+
+        color: white;
+      }
+      80% {
+
+        color: #f1c40f;
+      }
+
+      90% {
+
+        color: #2980b9;
+      }
+
+      100% {
+
+        color: tomato;
+      }
+    }
 
 .icons {
   display: flex;
