@@ -29,15 +29,15 @@
             this.loaded = 0;
             this.mothershipImg = new Image();
             this.mothershipImg.src = "./assets/images/mainship.png";
-            this.mothershipImg.onload = () => {
-              ctx.drawImage(this.mothershipImg,
-              60, 308, 500, 220);
-              // 60;
-              // this.poxY = 318;
-              // this.width = 470;
-              // this.height = 200;
-              //original 194 x 103
-            }
+            // this.mothershipImg.onload = () => {
+            //   ctx.drawImage(this.mothershipImg,
+            //   60, 308, 500, 220);
+            //   // 60;
+            //   // this.poxY = 318;
+            //   // this.width = 470;
+            //   // this.height = 200;
+            //   //original 194 x 103
+            // }
 
             this.spaceBG = new Image();
             this.spaceBG.src = "./assets/images/maxresdefault.jpg";
@@ -45,14 +45,14 @@
 
             this.shieldSheet= new Image();
             this.shieldSheet.src = "./assets/images/shieldsheet.png";
-            this.shieldSheet.onload = () => {
-              ctx.drawImage(this.shieldSheet,
-              0, 0, 300, 100,
-              40, 258, 470, 200);
-              // ctx.drawImage(imageRepo.shieldSheet,
-              // 0, 0, 300, 100,
-              // 60 - 20, 318 - 60, 470, 200);
-            }
+            // this.shieldSheet.onload = () => {
+            //   ctx.drawImage(this.shieldSheet,
+            //   0, 0, 300, 100,
+            //   40, 258, 470, 200);
+            //   // ctx.drawImage(imageRepo.shieldSheet,
+            //   // 0, 0, 300, 100,
+            //   // 60 - 20, 318 - 60, 470, 200);
+            // }
 
             this.enemy1 = new Image();
             this.enemy1.src = "./assets/images/enemy1.png";
@@ -420,6 +420,17 @@
             }
           }
 
+          function updatePlayer() {
+            //mothership
+            // playerList[0].drawSelf();
+            // playerList[0].drawShield();
+            ctx.drawImage(imageRepo.mothershipImg,
+            60, 308, 500, 220);
+            ctx.drawImage(imageRepo.shieldSheet,
+            0, 0, 300, 100,
+            40, 258, 470, 200);
+          }
+
           function updateBullets() {
             for (let i = 0; i < bulletList.length; i++) {
 
@@ -515,6 +526,7 @@
           //update intervals
           window.setInterval(updateBullets, 16);
           window.setInterval(updateExplosions, 16);
+          window.setInterval(updatePlayer, 16);
           window.setInterval(randomSpawn, 3000);
           window.setInterval(enemyUpdate, 500);
           window.setInterval(enemyAttack, randomInt(500, 5000));
