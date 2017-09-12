@@ -62,4 +62,7 @@ Main and only screen:
 - get spash images for victory and defeat screen.
 - Get backgorund music and sound effect for shoot, explosion, menu click,
 - Additional ship upgrades, weapon upgrade system
-- More enemy unit types: fast kamikaze plane, slow hydrogen bomb carrier,
+- More enemy unit types: fast kamikaze plane, slow hydrogen bomb carrier
+
+## Credits
+- Spaceship assets from http://millionthvector.blogspot.com/

@@ -56,7 +56,9 @@
 
             this.enemy1 = new Image();
             this.enemy1.src = "./assets/images/enemy1.png";
-            // this.spaceBG.onload = () => {}
+
+            this.explosion = new Image();
+            this.explosion.src = "./assets/images/explosheet.png";
 
             this.arrows = new Image();
             this.arrows.src = "./assets/images/arrows.png";
@@ -105,6 +107,8 @@
           //list of enemies on screen
           //max is currently 12
           window.enemyList = [];
+          //list of explosions
+          window.explosionList = [];
           //List of player cannons and mothership
           window.playerList = [];
           window.playing = false;
@@ -371,6 +375,12 @@
 
 
             destroy() {
+              //create explosion
+              let newexplo = new Explosion(this);
+              newexplo.drawSelf();
+              explosionList.push(newexplo);
+
+              //clear self
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               this.alive = false;
               this.posX = -1000;
@@ -378,6 +388,37 @@
             }
 
           }//end of enemy ship
+
+          class Explosion {
+            constructor(source) {
+              this.posX = source.posX;
+              this.posY = source.posY;
+              this.width = 40;
+              this.height = 40;
+              this.alive = true;
+              this.timer  = 0;
+
+              // this.timing = this.timing.bind(this);
+              // this.timeToGo = this.timeToGo.bind(this);
+              // this.destroy = this.destroy.bind(this);
+            }
+
+            drawSelf() {
+              // ctx.drawImage(imageRepo.shieldSheet,
+              // 0, 0, 300, 100,
+              // this.posX - 20, this.posY - 60, this.width, this.height);
+              ctx.drawImage(imageRepo.explosion,
+                0,          0,        30,        37,
+                this.posX, this.posY, this.width, this.height);
+            }
+
+            destroy() {
+              ctx.clearRect(this.posX, this.posY, this.width, this.height);
+              this.alive = false;
+              this.posX = -1000;
+              this.posY = -1000;
+            }
+          }
 
           function updateBullets() {
             for (let i = 0; i < bulletList.length; i++) {
@@ -416,6 +457,28 @@
 
           }
 
+          function updateExplosions() {
+            for (let i = 0; i < explosionList.length; i++) {
+              if (explosionList[i].alive) {
+                ctx.clearRect(explosionList[i].posX, explosionList[i].posY,
+                  explosionList[i].width, explosionList[i].height);
+                  ctx.drawImage(imageRepo.explosion,
+                    0,          0,        30,        37,
+                    explosionList[i].posX, explosionList[i].posY, explosionList[i].width, explosionList[i].height);
+                    explosionList[i].timer += 1;
+                    console.log(explosionList[i].timer);
+                    if (explosionList[i].timer >= 200) {
+                      explosionList[i].destroy();
+                      explosionList.splice(i, 1);
+                    }
+              } else {
+                //if its in the list but not alive...
+                explosionList[i].destroy();
+                explosionList.splice(i, 1);
+              }
+            }
+          }
+
           function enemyUpdate() {
             for (let i = 0; i < enemyList.length; i++) {
               if (enemyList[i].alive) {
@@ -451,14 +514,15 @@
         function setAllIntervals() {
           //update intervals
           window.setInterval(updateBullets, 16);
+          window.setInterval(updateExplosions, 16);
           window.setInterval(randomSpawn, 3000);
           window.setInterval(enemyUpdate, 500);
           window.setInterval(enemyAttack, randomInt(500, 5000));
 
 
           //although I make them all rect, the ship & shield still don't work
-          window.setInterval(mothership.drawSelf, 16);
-          window.setInterval(mothership.drawShield, 16);
+          // window.setInterval(mothership.drawSelf, 16);
+          // window.setInterval(mothership.drawShield, 16);
           window.setInterval(cannon.drawSelf, 16);
 
           //draw intervals
