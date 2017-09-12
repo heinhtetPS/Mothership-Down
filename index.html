@@ -522,11 +522,22 @@
 
             }
           }
+
+          function drawUI() {
+            ctx_ui.font = "14px Calibri";
+            ctx_ui.clearRect(0, 300, 100, 40);
+            ctx_ui.fillText("Shield:", 0, 300);
+            ctx_ui.fillText(playerList[0].shieldHP, 45, 300);
+            ctx_ui.fillText("Hull:", 0, 320);
+            ctx_ui.fillText(playerList[0].hullHP, 45, 320);
+          }
+
         function setAllIntervals() {
           //update intervals
           window.setInterval(updateBullets, 16);
           window.setInterval(updateExplosions, 16);
           window.setInterval(updatePlayer, 16);
+          window.setInterval(drawUI, 16);
           window.setInterval(randomSpawn, 3000);
           window.setInterval(enemyUpdate, 500);
           window.setInterval(enemyAttack, randomInt(500, 5000));
