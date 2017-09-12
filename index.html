@@ -25,7 +25,7 @@
           //initialize images
           window.imageRepo = new function() {
 
-            this.allimages = 4;
+            this.allimages = 5;
             this.loaded = 0;
             this.mothershipImg = new Image();
             this.mothershipImg.src = "./assets/images/mainship.png";
@@ -53,6 +53,10 @@
               // 0, 0, 300, 100,
               // 60 - 20, 318 - 60, 470, 200);
             }
+
+            this.enemy1 = new Image();
+            this.enemy1.src = "./assets/images/enemy1.png";
+            // this.spaceBG.onload = () => {}
 
             this.arrows = new Image();
             this.arrows.src = "./assets/images/arrows.png";
@@ -307,21 +311,20 @@
             }
 
             drawSelf() {
-              ctx.clearRect(this.posX, this.posY, this.width, this.height);
-              ctx.fillStyle = "white";
-              ctx.fillRect(this.posX, this.posY, this.width, this.height);
+              ctx.drawImage(imageRepo.enemy1,
+                this.posX, this.posY, this.width, this.height);
             }
 
             moveHorizontal() {
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
-              ctx.fillStyle = "white";
               if (randomInt(0,2) === 0) {
                 this.posX += 30;
               } else {
                 this.posX -= 30;
               }
               this.screenResets();
-              ctx.fillRect(this.posX, this.posY, this.width, this.height);
+              ctx.drawImage(imageRepo.enemy1,
+                this.posX, this.posY, this.width, this.height);
             }
 
             moveVertical() {
@@ -333,7 +336,8 @@
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               ctx.fillStyle = "white";
               this.posY += forwardVelocity;
-              ctx.fillRect(this.posX, this.posY, this.width, this.height);
+              ctx.drawImage(imageRepo.enemy1,
+                this.posX, this.posY, this.width, this.height);
             }
 
             cooldownreset() {
