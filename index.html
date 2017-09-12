@@ -87,45 +87,59 @@
         }//end of initialize
 
         //initialize mothership
-        window.mothership = {
-          posX: 60,
-          posY: 318,
-          width: 470,
-          height: 200,
-          tag: "playerShip",
-          hullHP: 100,
-          shieldHP: 100,
-          drawSelf: function() {
+        class Mothership {
+          constructor() {
+            this.posX = 60;
+            this.poxY = 318;
+            this.width = 470;
+            this.height = 200;
+            this.tag = "mothership";
+            this.hullHP = 100;
+            this.shieldHP = 100;
+
+            this.drawSelf = this.drawSelf.bind(this);
+            this.drawShield = this.drawShield.bind(this);
+          }
+
+          drawSelf() {
             ctx.drawImage(imageRepo.mothershipImg,
             this.posX, this.posY, this.width, this.height)
-          },
-          drawShield: function() {
+          }
+
+          drawShield() {
             ctx.drawImage(imageRepo.shieldSheet,
             0, 0, 300, 100,
             this.posX - 20, this.posY - 60, this.width, this.height)
           }
         }
+        const mothership = new Mothership();
         playerList.push(mothership);
 
         //initialize cannon vars
-        window.cannon = {
-          posX: canvas.width/2,
-          posY: canvas.height - 70,
-          width: 15,
-          height: 30,
-          hp: 10,
-          tag: "playerCannon",
-          drawSelf: function() {
+        class Cannon {
+          constructor() {
+            this.posX = canvas.width/2;
+            this.posY = canvas.height - 70;
+            this.width = 15;
+            this.height = 30;
+            this.hp = 10;
+            this.tag = "playerCannon";
+            this.drawSelf = this.drawSelf.bind(this);
+            this.screenResets = this.screenResets.bind(this);
+          }
+
+          drawSelf() {
             ctx.fillStyle = "gray";
             ctx.fillRect(this.posX, this.posY, this.width, this.height);
-          },
-          screenResets: function() {
+          }
+          screenResets() {
             if (cannon.posX < window.screenResets.left)
             cannon.posX = 580;
             if (cannon.posX > window.screenResets.right)
             cannon.posX = 0;
           }
-        };
+        }
+        let cannon = new Cannon();
         playerList.push(cannon);
 
         class Parallax {
@@ -135,6 +149,7 @@
             this.width = 600;
             this.height = 400;
             this.speed = 0.2;
+
             this.drawSelf = this.drawSelf.bind(this);
           }
 
@@ -380,40 +395,19 @@
           window.setInterval(updateBullets, 16);
           window.setInterval(randomSpawn, 3000);
           window.setInterval(enemyUpdate, 500);
-          window.setInterval(enemyAttack, randomInt(500, 4000));
+          window.setInterval(enemyAttack, randomInt(500, 5000));
 
           //draw
           const bg = new Parallax();
           window.setInterval(bg.drawSelf, 16);
-          // window.setInterval( () => {
-          //   //draw bg
-          //   parallax.drawSelf;
-          //   //draw mothership
-          //   mothership.drawSelf;
-          //   mothership.drawShield;
-          //
-          //   //draw main cannon
-          //   cannon.drawSelf;
-          // }, 16);
+
+          //player region
+          window.setInterval(mothership.drawSelf, 16);
+          window.setInterval(mothership.drawShield, 16);
+          window.setInterval(cannon.drawSelf, 16);
 
         }
 
-          function draw() {
-            //draw bg
-            parallax.drawSelf();
-            //draw mothership
-            mothership.drawSelf();
-            mothership.drawShield();
-
-            //draw main cannon
-            cannon.drawSelf();
-
-            //draw active enemies
-            // for (let i = 0; i < enemyList.length; i++) {
-            //   enemyList[i].drawSelf();
-            // }
-            console.log("continuous draws");
-          }
           //keypress handler
           //this is also basically the update() for ship
           document.addEventListener('keydown', (e) => {
