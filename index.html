@@ -28,7 +28,7 @@
             this.allimages = 5;
             this.loaded = 0;
             this.mothershipImg = new Image();
-            this.mothershipImg.src = "./assets/images/mainship.png";
+            this.mothershipImg.src = "./assets/images/altship.png";
             // this.mothershipImg.onload = () => {
             //   ctx.drawImage(this.mothershipImg,
             //   60, 308, 500, 220);
@@ -38,6 +38,15 @@
             //   // this.height = 200;
             //   //original 194 x 103
             // }
+
+            this.cannonSheet = new Image();
+            this.cannonSheet.src = "./assets/images/cannonsheet.png"
+            // this.cannonSheet.onload = () => {
+            //   ctx.drawImage(imageRepo.cannonSheet,
+            //     0, 0, 90, 220,
+            //     100, 100, 30, 80);
+            // };
+            //first cannon cooords 0, 0, 90, 220,
 
             this.spaceBG = new Image();
             this.spaceBG.src = "./assets/images/maxresdefault.jpg";
@@ -189,9 +198,9 @@
         class Cannon {
           constructor() {
             this.posX = canvas.width/2;
-            this.posY = canvas.height - 70;
-            this.width = 15;
-            this.height = 30;
+            this.posY = canvas.height - 90;
+            this.width = 30;
+            this.height = 80;
             this.alive = true;
             this.tag = "playerCannon";
             this.deathtimer = 0;
@@ -203,8 +212,9 @@
           }
 
           drawSelf() {
-            ctx.fillStyle = "gray";
-            ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            ctx.drawImage(imageRepo.cannonSheet,
+            0, 0, 90, 220,
+            this.posX, this.posY, this.width, this.height);
           }
           screenResets() {
             if (cannon.posX < window.screenResets.left)
@@ -215,8 +225,9 @@
 
           respawn() {
             this.alive = true;
-            ctx.fillStyle = "gray";
-            ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            ctx.drawImage(imageRepo.cannonSheet,
+            0, 0, 90, 220,
+            this.posX, this.posY, this.width, this.height);
           }
 
           destroy() {
@@ -618,7 +629,6 @@
             //keypress handler
             //this is also basically the update() for ship
             document.addEventListener('keydown', (e) => {
-              ctx.fillStyle = 'gray';
 
               if (thisCannon.alive) {
                 switch (e.keyCode) {
@@ -628,14 +638,18 @@
                   ctx.clearRect(thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
                   thisCannon.posX -= 20;
                   thisCannon.screenResets();
-                  ctx.fillRect(thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
+                  ctx.drawImage(imageRepo.cannonSheet,
+                  0, 0, 90, 220,
+                  thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
                   break;
                   case 39:
                   //right
                   ctx.clearRect(thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
                   thisCannon.posX += 20;
                   thisCannon.screenResets();
-                  ctx.fillRect(thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
+                  ctx.drawImage(imageRepo.cannonSheet,
+                  0, 0, 90, 220,
+                  thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
                   break;
                   case 32:
                   //spacebar shoot
