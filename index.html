@@ -25,26 +25,48 @@
           //initialize images
           window.imageRepo = new function() {
 
-            this.allimages = 3;
+            this.allimages = 4;
             this.loaded = 0;
             this.mothershipImg = new Image();
             this.mothershipImg.src = "./assets/images/mainship.png";
-            this.mothershipImg.onload = () => {this.loaded++;}
+            this.mothershipImg.onload = () => {
+              ctx.drawImage(this.mothershipImg,
+              60, 308, 500, 220);
+              // 60;
+              // this.poxY = 318;
+              // this.width = 470;
+              // this.height = 200;
+              //original 194 x 103
+            }
 
             this.spaceBG = new Image();
             this.spaceBG.src = "./assets/images/maxresdefault.jpg";
-            this.spaceBG.onload = () => {this.loaded++;}
+            // this.spaceBG.onload = () => {}
 
             this.shieldSheet= new Image();
             this.shieldSheet.src = "./assets/images/shieldsheet.png";
+            this.shieldSheet.onload = () => {
+              ctx.drawImage(this.shieldSheet,
+              0, 0, 300, 100,
+              40, 258, 470, 200);
+              // ctx.drawImage(imageRepo.shieldSheet,
+              // 0, 0, 300, 100,
+              // 60 - 20, 318 - 60, 470, 200);
+            }
 
             this.arrows = new Image();
             this.arrows.src = "./assets/images/arrows.png";
-            this.arrows.onload = () => {this.loaded++;}
+            this.arrows.onload = () => {
+              ctx_ui.drawImage(this.arrows,
+              440, 30, 50, 50);
+            }
 
             this.spacebar = new Image();
             this.spacebar.src = "./assets/images/spacebar.png";
-
+            this.spacebar.onload = () => {
+              ctx_ui.drawImage(this.spacebar,
+              430, 90, 100, 50);
+            }
             this.healthbar = new Image();
 
             this.beacon = new Image();
@@ -94,12 +116,6 @@
           ctx_ui.fillText("Shoot puny Earthlings with spacebar.", 50, 110);
           ctx_ui.fillText("Press Enter to Begin.", 50, 230);
 
-          ctx_ui.drawImage(imageRepo.arrows,
-          100, 160, 50, 50);
-          //problem: This runs before the image is loaded
-          console.log("just passed the arrow draw line");
-          // ctx_ui.fillRect(100,160,50,50);
-
           //press enter event
           document.addEventListener('keydown', (e) => {
 
@@ -129,6 +145,7 @@
 
             this.drawSelf = this.drawSelf.bind(this);
             this.drawShield = this.drawShield.bind(this);
+            this.drawUI = this.drawUI.bind(this);
           }
 
           drawSelf() {
@@ -145,7 +162,14 @@
             ctx.fillStyle = "yellow";
             ctx.fillRect(this.posX - 20, this.posY - 60, this.width, this.height);
           }
+          drawUI() {
+            ctx_ui.font = "30px Calibri";
+            ctx_ui.fillText(`Shield: #{this.shieldHP}`, 50, 50);
+          }
         }
+        //draw player stuff
+        const mothership = new Mothership();
+        playerList.push(mothership);
 
 
         //initialize cannon vars
@@ -427,9 +451,7 @@
           window.setInterval(enemyUpdate, 500);
           window.setInterval(enemyAttack, randomInt(500, 5000));
 
-          //draw player stuff
-          const mothership = new Mothership();
-          playerList.push(mothership);
+
           //although I make them all rect, the ship & shield still don't work
           window.setInterval(mothership.drawSelf, 16);
           window.setInterval(mothership.drawShield, 16);
@@ -490,7 +512,7 @@
       <div class="game-viewport">
           <canvas id="canvas-BG" height="400" width="600"></canvas>
           <canvas id="canvas" height="400" width="600" tabindex='1'></canvas>
-          <canvas id="canvas-UI" height="400" width="600"></canvas>
+          <canvas id="canvas-UI" height="400" width="600" z-index="1"></canvas>
 
       </div>
       <div class="icons">
