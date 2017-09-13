@@ -68,6 +68,21 @@
 
             this.explosion = new Image();
             this.explosion.src = "./assets/images/explosheet.png";
+            this.explosion.onload = () => {
+              // ctx.drawImage(imageRepo.explosion,
+              //   0,
+              //   0,
+              //   27,
+              //   37,
+              //   100, 100, 40, 40);
+              // ctx.drawImage(imageRepo.explosion,
+              //   this.frameIndex * this.width / this.numberOfFrames,
+              //   0,
+              //   this.width / this.numberOfFrames,
+              //   37,
+              //   100, 100, this.width / this.numberOfFrames, this.height);
+              //looks like I have to make my own sprite sheet
+            }
 
             this.arrows = new Image();
             this.arrows.src = "./assets/images/arrows.png";
@@ -212,6 +227,7 @@
           }
 
           drawSelf() {
+            ctx.clearRect(this.posX, this.posY, this.width, this.height);
             ctx.drawImage(imageRepo.cannonSheet,
             0, 0, 90, 220,
             this.posX, this.posY, this.width, this.height);
@@ -315,7 +331,7 @@
                   if (otherObjects[i].alive) {
 
                     if (this.checkIntersect(otherObjects[i])) {
-                      debugger
+                      // debugger
                       if (otherObjects[i].tag === "enemyShip") {
                         otherObjects[i].destroy();
                         otherObjects.splice(i, 1);
@@ -430,6 +446,7 @@
               let newexplo = new Explosion(this);
               newexplo.drawSelf();
               explosionList.push(newexplo);
+              console.log(explosionList);
 
               //clear self
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
@@ -449,18 +466,52 @@
               this.alive = true;
               this.timer  = 0;
 
-              // this.timing = this.timing.bind(this);
-              // this.timeToGo = this.timeToGo.bind(this);
+              //for spriteAnim
+              this.frameIndex = 0;
+              this.tickCount = 0;
+              this.ticksPerFrame = 0;
+              this.maxFrames = 7;
+
+
+                this.update = this.update.bind(this);
+                this.drawSelf = this.drawSelf.bind(this);
               // this.destroy = this.destroy.bind(this);
             }
 
+            update() {
+              this.tickCount += 1;
+                // debugger
+              if (this.tickCount > this.ticksPerFrame) {
+                this.tickCount = 0;
+                if (this.frameIndex < this.maxFrames) {
+                  this.frameIndex += 1;
+
+                }
+              }
+            }
+
             drawSelf() {
-              // ctx.drawImage(imageRepo.shieldSheet,
-              // 0, 0, 300, 100,
-              // this.posX - 20, this.posY - 60, this.width, this.height);
-              ctx.drawImage(imageRepo.explosion,
-                0,          0,        30,        37,
-                this.posX, this.posY, this.width, this.height);
+          //     ctx.drawImage(that.image,
+          //  frameIndex * that.width / numberOfFrames,
+          //  0,
+          //  that.width / numberOfFrames,
+          //  that.height,
+          //
+          //  0,
+          //  0,
+          //  that.width / numberOfFrames,
+          //  that.height);
+          ctx.clearRect(this.posX, this.posY, this.width, this.height);
+              // ctx.drawImage(imageRepo.explosion,
+              //   this.frameIndex * this.width / this.numberOfFrames,
+              //   0,
+              //   this.width / this.numberOfFrames,
+              //   37,
+              //   this.posX, this.posY, this.width / this.numberOfFrames, this.height);
+                //old one
+                ctx.drawImage(imageRepo.explosion,
+                  0,          0,        30,        37,
+                  this.posX, this.posY, this.width, this.height);
             }
 
             destroy() {
@@ -524,10 +575,9 @@
               if (explosionList[i].alive) {
                 ctx.clearRect(explosionList[i].posX, explosionList[i].posY,
                   explosionList[i].width, explosionList[i].height);
-                  ctx.drawImage(imageRepo.explosion,
-                    0,          0,        30,        37,
-                    explosionList[i].posX, explosionList[i].posY, explosionList[i].width, explosionList[i].height);
-                    explosionList[i].timer += 1;
+
+                  explosionList[i].update();
+                  explosionList[i].drawSelf();
                     // console.log(explosionList[i].timer);
                     if (explosionList[i].timer >= 200) {
                       explosionList[i].destroy();
@@ -600,7 +650,7 @@
 
           //now that I updated cannon to die, this also stopped working
           //it clearly runs once but only once
-          window.setInterval(updateCannon(playerList[1]), 16);
+          window.setInterval(updateCannon, 600);
 
           //draw intervals
           //draw bg
@@ -611,104 +661,70 @@
 
         }//end set all intervals
 
-        function updateCannon(cannon) {
-          let thisCannon = cannon;
+        function updateCannon() {
+          let thisCannon = window.playerList[1];
           console.log("always updating");
           //it never goes in here
           if (!thisCannon.alive) {
-            debugger
+
             thisCannon.deathtimer += 1;
             console.log(thisCannon.deathtimer);
-            if (thisCannon.deathtimer >= 200) {
+            if (thisCannon.deathtimer >= 10) {
               thisCannon.respawn();
             }
           } else {
             //its alive
             thisCannon.drawSelf();
 
-            //keypress handler
-            //this is also basically the update() for ship
-            document.addEventListener('keydown', (e) => {
 
-              if (thisCannon.alive) {
-                switch (e.keyCode) {
-
-                  case 37:
-                  //left
-                  ctx.clearRect(thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
-                  thisCannon.posX -= 20;
-                  thisCannon.screenResets();
-                  ctx.drawImage(imageRepo.cannonSheet,
-                  0, 0, 90, 220,
-                  thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
-                  break;
-                  case 39:
-                  //right
-                  ctx.clearRect(thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
-                  thisCannon.posX += 20;
-                  thisCannon.screenResets();
-                  ctx.drawImage(imageRepo.cannonSheet,
-                  0, 0, 90, 220,
-                  thisCannon.posX, thisCannon.posY, thisCannon.width, thisCannon.height);
-                  break;
-                  case 32:
-                  //spacebar shoot
-                  e.preventDefault();
-                  let nb = new bullet(
-                    thisCannon.posX + 5, thisCannon.posY, 10, 6, 12);
-                    nb.spawn(thisCannon.posX + 5, thisCannon.posY, 10, 6, 12, "player");
-                    nb.drawSelf();
-                    bulletList.push(nb);
-                    // console.log(bulletList);
-                    break;
-                    //add another case for pause if time allows
-                    default:
-                  }
-
-              }
-            });
           }
 
-        }
+        }//end of update cannon
 
-          // //keypress handler
-          // //this is also basically the update() for ship
-          // document.addEventListener('keydown', (e) => {
-          //   ctx.fillStyle = 'gray';
-          //   switch (e.keyCode) {
-          //
-          //     case 37:
-          //     //left
-          //     ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
-          //     cannon.posX -= 20;
-          //     cannon.screenResets();
-          //     ctx.fillRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
-          //     break;
-          //     case 39:
-          //     //right
-          //     ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
-          //     cannon.posX += 20;
-          //     cannon.screenResets();
-          //     ctx.fillRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
-          //     break;
-          //     case 32:
-          //     //spacebar shoot
-          //     e.preventDefault();
-          //     let nb = new bullet(
-          //     cannon.posX + 5, cannon.posY, 10, 6, 12);
-          //     nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12, "player");
-          //     nb.drawSelf();
-          //     bulletList.push(nb);
-          //     // console.log(bulletList);
-          //     break;
-          //     //add another case for pause if time allows
-          //     default:
-          //   }
-          // });
+        //keypress handler
+        //this is also basically the update() for ship
+        document.addEventListener('keydown', (e) => {
 
+          if (cannon.alive) {
+            switch (e.keyCode) {
 
+              case 37:
+              //left
+              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
+              cannon.posX -= 20;
+              cannon.screenResets();
+              ctx.drawImage(imageRepo.cannonSheet,
+              0, 0, 90, 220,
+              cannon.posX, cannon.posY, cannon.width, cannon.height);
+              break;
+              case 39:
+              //right
+              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
+              cannon.posX += 20;
+              cannon.screenResets();
+              ctx.drawImage(imageRepo.cannonSheet,
+              0, 0, 90, 220,
+              cannon.posX, cannon.posY, cannon.width, cannon.height);
+              break;
+              case 32:
+              //spacebar shoot
+              e.preventDefault();
+              let nb = new bullet(
+                cannon.posX + 5, cannon.posY, 10, 6, 12);
+                nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12, "player");
+                nb.drawSelf();
+                bulletList.push(nb);
+                // console.log(bulletList);
+                break;
+                //add another case for pause if time allows
+                default:
+              }
+
+          }
+        });
 
       })//end of DOMContentLoaded
+
     </script>
   </head>
   <body>
