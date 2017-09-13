@@ -641,6 +641,10 @@
             this.drawSelf = function() {
               //draw beacon, vertical line, 2 horiz lines
               //clear, then invoke update, then redraw
+              ctx_ui.clearRect(this.imagePosX, this.imagePosY, 100, 50);
+              // this.runTimer();
+              // ctx_ui.drawImage(imageRepo.beacon,
+              // this.imagePosX, this.imagePosY, 100, 50);
             }
 
           }
