@@ -213,7 +213,7 @@
         class Cannon {
           constructor() {
             this.posX = canvas.width/2;
-            this.posY = canvas.height - 90;
+            this.posY = canvas.height - 150;
             this.width = 30;
             this.height = 80;
             this.alive = true;
@@ -624,6 +624,27 @@
             }
           }
 
+          function beacon(image) {
+            this.timer = 20000;
+            this.image = image;
+            this.imagePosX = 400;
+            this.imagePosY = 200;
+
+
+            this.runTimer = function() {
+              this.timer -= 1;
+              this.imagePosY += 1;
+            }
+
+
+
+            this.drawSelf = function() {
+              //draw beacon, vertical line, 2 horiz lines
+              //clear, then invoke update, then redraw
+            }
+
+          }
+
           function drawUI() {
             ctx_ui.font = "14px Calibri";
             ctx_ui.clearRect(0, 300, 100, 40);
@@ -681,6 +702,32 @@
 
         }//end of update cannon
 
+        function moveRight() {
+          //max left is 180, max right is 380
+          if (cannon.posX > 380) {
+            cannon.posX += 18
+            cannon.posY += 10;
+          } else if (cannon.posX < 180) {
+            cannon.posX += 18
+            cannon.posY -= 10;
+          } else {
+            cannon.posX += 20;
+          }
+        }
+
+        function moveLeft() {
+          //max left is 180, max right is 380
+          if (cannon.posX > 380) {
+            cannon.posX -= 18
+            cannon.posY -= 10;
+          } else if (cannon.posX < 180) {
+            cannon.posX -= 18
+            cannon.posY += 10;
+          } else {
+            cannon.posX -= 20;
+          }
+        }
+
         //keypress handler
         //this is also basically the update() for ship
         document.addEventListener('keydown', (e) => {
@@ -689,18 +736,20 @@
             switch (e.keyCode) {
 
               case 37:
+              e.preventDefault();
               //left
               ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
-              cannon.posX -= 20;
+              moveLeft();
               cannon.screenResets();
               ctx.drawImage(imageRepo.cannonSheet,
               0, 0, 90, 220,
               cannon.posX, cannon.posY, cannon.width, cannon.height);
               break;
               case 39:
+              e.preventDefault();
               //right
               ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
-              cannon.posX += 20;
+              moveRight();
               cannon.screenResets();
               ctx.drawImage(imageRepo.cannonSheet,
               0, 0, 90, 220,
@@ -715,6 +764,7 @@
                 nb.drawSelf();
                 bulletList.push(nb);
                 // console.log(bulletList);
+                console.log(cannon.posX);
                 break;
                 //add another case for pause if time allows
                 default:
