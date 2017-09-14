@@ -33,7 +33,7 @@
             //   ctx.drawImage(this.mothershipImg,
             //   60, 308, 500, 220);
             //   // 60;
-            //   // this.poxY = 318;
+            //   // this.posY = 318;
             //   // this.width = 470;
             //   // this.height = 200;
             //   //original 194 x 103
@@ -172,12 +172,13 @@
         class Mothership {
           constructor() {
             this.posX = 60;
-            this.poxY = 318;
+            this.posY = 288;
             this.width = 470;
             this.height = 200;
             this.tag = "mothership";
             this.hullHP = 100;
             this.shieldHP = 100;
+            this.alive = true;
 
             this.drawSelf = this.drawSelf.bind(this);
             this.drawShield = this.drawShield.bind(this);
@@ -185,18 +186,19 @@
           }
 
           drawSelf() {
-            // ctx.drawImage(imageRepo.mothershipImg,
-            // this.posX, this.posY, this.width, this.height);
-            ctx.fillStyle = "purple";
-            ctx.fillRect(this.posX, this.posY, this.width, this.height);
+            // ctx.clearRect(this.posX, this.posY, this.width, this.height);
+            ctx.drawImage(imageRepo.mothershipImg,
+            this.posX, this.posY, this.width, this.height);
+
           }
 
           drawShield() {
-            // ctx.drawImage(imageRepo.shieldSheet,
-            // 0, 0, 300, 100,
-            // this.posX - 20, this.posY - 60, this.width, this.height);
-            ctx.fillStyle = "yellow";
-            ctx.fillRect(this.posX - 20, this.posY - 60, this.width, this.height);
+            // ctx.clearRect(this.posX - 20, this.posY - 60, this.width, this.height);
+            ctx.globalAlpha = 0.1;
+            ctx.drawImage(imageRepo.shieldSheet,
+            0, 0, 300, 100,
+            this.posX - 20, this.posY - 60, this.width, this.height);
+            ctx.globalAlpha = 1;
           }
           drawUI() {
             //this doesn't work at all
@@ -212,8 +214,8 @@
         //initialize cannon vars
         class Cannon {
           constructor() {
-            this.posX = canvas.width/2;
-            this.posY = canvas.height - 150;
+            this.posX = canvas.width/2 - 16;
+            this.posY = canvas.height - 160;
             this.width = 30;
             this.height = 80;
             this.alive = true;
@@ -480,6 +482,7 @@
 
             update() {
               this.tickCount += 1;
+              this.timer += 1;
                 // debugger
               if (this.tickCount > this.ticksPerFrame) {
                 this.tickCount = 0;
@@ -524,13 +527,9 @@
 
           function updateShip() {
             //mothership
-            // playerList[0].drawSelf();
-            // playerList[0].drawShield();
-            ctx.drawImage(imageRepo.mothershipImg,
-            60, 308, 500, 220);
-            ctx.drawImage(imageRepo.shieldSheet,
-            0, 0, 300, 100,
-            40, 258, 470, 200);
+            playerList[0].drawSelf();
+            playerList[0].drawShield();
+
           }
 
           function updateBullets() {
@@ -574,12 +573,12 @@
             for (let i = 0; i < explosionList.length; i++) {
               if (explosionList[i].alive) {
                 ctx.clearRect(explosionList[i].posX, explosionList[i].posY,
-                  explosionList[i].width, explosionList[i].height);
+                  explosionList[i].width -10, explosionList[i].height - 10);
 
                   explosionList[i].update();
                   explosionList[i].drawSelf();
                     // console.log(explosionList[i].timer);
-                    if (explosionList[i].timer >= 200) {
+                    if (explosionList[i].timer >= 100) {
                       explosionList[i].destroy();
                       explosionList.splice(i, 1);
                     }
@@ -688,7 +687,6 @@
 
         function updateCannon() {
           let thisCannon = window.playerList[1];
-          console.log("always updating");
           //it never goes in here
           if (!thisCannon.alive) {
 
@@ -706,14 +704,29 @@
 
         }//end of update cannon
 
+
+        //gotta split horizontal and vertical properly
         function moveRight() {
           //max left is 180, max right is 380
+          // if (cannon.posX > 380) {
+          //   cannon.posX += 18
+          //   cannon.posY += 10;
+          // } else if (cannon.posX < 180) {
+          //   cannon.posX += 18
+          //   cannon.posY -= 10;
+          // } else {
+          //   cannon.posX += 20;
+          // }
           if (cannon.posX > 380) {
-            cannon.posX += 18
+            cannon.posX += 18;
             cannon.posY += 10;
-          } else if (cannon.posX < 180) {
-            cannon.posX += 18
-            cannon.posY -= 10;
+          }
+          // else if (cannon.posX < 380 && cannon.posX > 300){
+          //   cannon.posX += 16;
+          //   cannon.posY += 12;}
+           else if (cannon.posX < 180) {
+            cannon.posX += 14;
+            cannon.posY -= 14;
           } else {
             cannon.posX += 20;
           }
@@ -722,11 +735,15 @@
         function moveLeft() {
           //max left is 180, max right is 380
           if (cannon.posX > 380) {
-            cannon.posX -= 18
+            cannon.posX -= 18;
             cannon.posY -= 10;
-          } else if (cannon.posX < 180) {
-            cannon.posX -= 18
-            cannon.posY += 10;
+          }
+          // else if (cannon.posX < 380 && cannon.posX > 300){
+          //   cannon.posX -= 16;
+          //   cannon.posY -= 12;}
+          else if (cannon.posX < 180) {
+            cannon.posX -= 14;
+            cannon.posY += 14;
           } else {
             cannon.posX -= 20;
           }
