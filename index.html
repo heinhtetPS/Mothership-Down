@@ -68,21 +68,6 @@
 
             this.explosion = new Image();
             this.explosion.src = "./assets/images/explosheet.png";
-            this.explosion.onload = () => {
-              // ctx.drawImage(imageRepo.explosion,
-              //   0,
-              //   0,
-              //   27,
-              //   37,
-              //   100, 100, 40, 40);
-              // ctx.drawImage(imageRepo.explosion,
-              //   this.frameIndex * this.width / this.numberOfFrames,
-              //   0,
-              //   this.width / this.numberOfFrames,
-              //   37,
-              //   100, 100, this.width / this.numberOfFrames, this.height);
-              //looks like I have to make my own sprite sheet
-            }
 
             this.arrows = new Image();
             this.arrows.src = "./assets/images/arrows.png";
@@ -95,7 +80,7 @@
             this.spacebar.src = "./assets/images/spacebar.png";
             this.spacebar.onload = () => {
               ctx_ui.drawImage(this.spacebar,
-              310, 235, 100, 50);
+              300, 238, 100, 50);
             }
             this.healthbar = new Image();
 
@@ -149,7 +134,7 @@
           ctx_ui.fillText("The third planet in the Milky Way Galaxy...", 50, 90);
           ctx_ui.font = '10px "Press Start 2P"';
           ctx_ui.fillText("Use       to move cannon's position.", 50, 240);
-          ctx_ui.fillText("Shoot puny Earthlings with      .", 50, 260);
+          ctx_ui.fillText("Shoot puny Earthlings with        .", 50, 260);
           ctx_ui.fillText("Press Enter to Begin.", 50, 320);
 
           //press enter event
@@ -159,7 +144,9 @@
               e.preventDefault();
               ctx_ui.clearRect(0,0, 600, 400);
               window.playing = true;
+              window.bg = new Parallax();
               setAllIntervals();
+              updateLoop();
             }
           });
         }
@@ -173,7 +160,7 @@
           constructor() {
             this.posX = 60;
             this.posY = 288;
-            this.width = 470;
+            this.width = 500;
             this.height = 200;
             this.tag = "mothership";
             this.hullHP = 100;
@@ -193,8 +180,8 @@
           }
 
           drawShield() {
-            // ctx.clearRect(this.posX - 20, this.posY - 60, this.width, this.height);
-            ctx.globalAlpha = 0.1;
+            ctx.clearRect(this.posX - 20, this.posY - 60, this.width, this.height);
+            ctx.globalAlpha = 0.4;
             ctx.drawImage(imageRepo.shieldSheet,
             0, 0, 300, 100,
             this.posX - 20, this.posY - 60, this.width, this.height);
@@ -214,8 +201,8 @@
         //initialize cannon vars
         class Cannon {
           constructor() {
-            this.posX = canvas.width/2 - 16;
-            this.posY = canvas.height - 160;
+            this.posX = canvas.width/2 - 12;
+            this.posY = canvas.height - 140;
             this.width = 30;
             this.height = 80;
             this.alive = true;
@@ -229,7 +216,7 @@
           }
 
           drawSelf() {
-            ctx.clearRect(this.posX, this.posY, this.width, this.height);
+            ctx.clearRect(this.posX, this.posY, this.width, this.height -15);
             ctx.drawImage(imageRepo.cannonSheet,
             0, 0, 90, 220,
             this.posX, this.posY, this.width, this.height);
@@ -265,7 +252,7 @@
             this.posY = 0;
             this.width = 600;
             this.height = 400;
-            this.speed = 0.2;
+            this.speed = 0.5;
 
             this.drawSelf = this.drawSelf.bind(this);
           }
@@ -527,8 +514,9 @@
 
           function updateShip() {
             //mothership
-            playerList[0].drawSelf();
             playerList[0].drawShield();
+            playerList[0].drawSelf();
+
 
           }
 
@@ -657,31 +645,33 @@
             ctx_ui.fillText(playerList[0].hullHP, 45, 320);
           }
 
+          function updateLoop() {
+
+            window.requestAnimationFrame(updateLoop);
+            window.bg.drawSelf();
+            updateShip();
+            drawUI();
+            updateBullets();
+            updateExplosions();
+            updateCannon();
+
+          }
+
         function setAllIntervals() {
           //update intervals
-          window.setInterval(updateBullets, 16);
-          window.setInterval(updateExplosions, 16);
-          window.setInterval(updateShip, 16);
-          window.setInterval(drawUI, 16);
           window.setInterval(randomSpawn, 3000);
           window.setInterval(enemyUpdate, 500);
           window.setInterval(enemyAttack, randomInt(500, 5000));
-
-
-          //although I make them all rect, the ship & shield still don't work
-          // window.setInterval(mothership.drawSelf, 16);
-          // window.setInterval(mothership.drawShield, 16);
-
-          //now that I updated cannon to die, this also stopped working
-          //it clearly runs once but only once
-          window.setInterval(updateCannon, 600);
+          // window.setInterval(updateCannon, 600);
 
           //draw intervals
           //draw bg
-          const bg = new Parallax();
-          window.setInterval(bg.drawSelf, 16);
-
-
+          // const bg = new Parallax();
+          // window.setInterval(bg.drawSelf, 16);
+          // window.setInterval(updateShip, 16);
+          // window.setInterval(drawUI, 16);
+          // window.setInterval(updateBullets, 16);
+          // window.setInterval(updateExplosions, 16);
 
         }//end set all intervals
 
@@ -707,46 +697,91 @@
 
         //gotta split horizontal and vertical properly
         function moveRight() {
-          //max left is 180, max right is 380
-          // if (cannon.posX > 380) {
-          //   cannon.posX += 18
-          //   cannon.posY += 10;
-          // } else if (cannon.posX < 180) {
-          //   cannon.posX += 18
-          //   cannon.posY -= 10;
-          // } else {
-          //   cannon.posX += 20;
-          // }
-          if (cannon.posX > 380) {
-            cannon.posX += 18;
+
+          //horizontal movement
+          if (cannon.posX > 70 && cannon.posX < 380) {
+            cannon.posX += 20;
+          } else {
+            cannon.posX += 10
+          }
+
+          //vertical movement
+
+          //move right while you're on right
+          if (cannon.posX > 300) {
+            cannon.posY += 5
+          } else if (cannon.posX > 415) {
             cannon.posY += 10;
           }
-          // else if (cannon.posX < 380 && cannon.posX > 300){
-          //   cannon.posX += 16;
-          //   cannon.posY += 12;}
-           else if (cannon.posX < 180) {
-            cannon.posX += 14;
-            cannon.posY -= 14;
-          } else {
-            cannon.posX += 20;
+          //move right while you're on left
+          else if (cannon.posX < 300) {
+            cannon.posY -= 5;
+          } else if (cannon.posX < 185) {
+            cannon.posY -= 10;
           }
+
+          //downward bounds
+          if (cannon.posY > 400)
+          cannon.posY = 400;
+
+          //upward bounds
+          if (cannon.posY < 260)
+          cannon.posY = 260;
+
+          cannon.screenResets();
         }
 
         function moveLeft() {
-          //max left is 180, max right is 380
-          if (cannon.posX > 380) {
-            cannon.posX -= 18;
-            cannon.posY -= 10;
-          }
-          // else if (cannon.posX < 380 && cannon.posX > 300){
-          //   cannon.posX -= 16;
-          //   cannon.posY -= 12;}
-          else if (cannon.posX < 180) {
-            cannon.posX -= 14;
-            cannon.posY += 14;
-          } else {
+
+          //horizontal movement
+          if (cannon.posX > 70 && cannon.posX < 380) {
             cannon.posX -= 20;
+          } else {
+            cannon.posX -= 10
           }
+
+          //vertical movement
+
+          //move left while you're on left
+          if (cannon.posX < 300) {
+            cannon.posY += 5
+          } else if (cannon.posX < 185) {
+            cannon.posY += 10;
+          }
+          //move left while you're on right
+          else if (cannon.posX > 300) {
+            cannon.posY -= 5;
+          } else if (cannon.posX > 415) {
+            cannon.posY -= 100;
+          }
+
+          //downward bounds
+          if (cannon.posY > 400)
+          cannon.posY = 400;
+
+          //upward bounds
+          if (cannon.posY < 260)
+          cannon.posY = 260;
+
+
+
+
+
+          // //max left is 180, max right is 380
+          // if (cannon.posX > 380) {
+          //   cannon.posX -= 18;
+          //   cannon.posY -= 10;
+          // }
+          // // else if (cannon.posX < 380 && cannon.posX > 300){
+          // //   cannon.posX -= 16;
+          // //   cannon.posY -= 12;}
+          // else if (cannon.posX < 180) {
+          //   cannon.posX -= 14;
+          //   cannon.posY += 14;
+          // } else {
+          //   cannon.posX -= 20;
+          // }
+          cannon.screenResets();
         }
 
         //keypress handler
@@ -759,23 +794,25 @@
               case 37:
               e.preventDefault();
               //left
-              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
+              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
               moveLeft();
-              cannon.screenResets();
+              console.log(cannon.posX, cannon.posY);
               ctx.drawImage(imageRepo.cannonSheet,
               0, 0, 90, 220,
-              cannon.posX, cannon.posY, cannon.width, cannon.height);
+              cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
               break;
+
               case 39:
               e.preventDefault();
               //right
-              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height);
+              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
               moveRight();
-              cannon.screenResets();
+              console.log(cannon.posX, cannon.posY);
               ctx.drawImage(imageRepo.cannonSheet,
               0, 0, 90, 220,
-              cannon.posX, cannon.posY, cannon.width, cannon.height);
+              cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
               break;
+
               case 32:
               //spacebar shoot
               e.preventDefault();
