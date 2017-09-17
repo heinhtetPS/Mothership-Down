@@ -170,13 +170,21 @@
             this.drawSelf = this.drawSelf.bind(this);
             this.drawShield = this.drawShield.bind(this);
             this.drawUI = this.drawUI.bind(this);
+            this.takeDamage = this.takeDamage.bind(this);
           }
 
           drawSelf() {
             // ctx.clearRect(this.posX, this.posY, this.width, this.height);
             ctx.drawImage(imageRepo.mothershipImg,
             this.posX, this.posY, this.width, this.height);
+          }
 
+          takeDamage() {
+            if (this.shieldHP > 0) {
+              this.shieldHP -= 10;
+            } else {
+              this.hullHP -= 10;
+            }
           }
 
           drawShield() {
@@ -328,11 +336,10 @@
 
                       } else if (otherObjects[i].tag === "mothership") {
                         //mothership dmg
-                        otherObjects[i].shieldHP -= 10;
-                        console.log(otherObjects[i].shieldHP);
+                        otherObjects[i].takeDamage();
                         this.destroy();
                       } else if (otherObjects[i].tag === "playerCannon") {
-                        otherObjects[0].hullHP -= 10;
+                        otherObjects[0].takeDamage();
                         otherObjects[i].destroy();
                         this.destroy();
                       }
@@ -579,34 +586,43 @@
           }
 
           function enemyUpdate() {
-            for (let i = 0; i < enemyList.length; i++) {
-              if (enemyList[i].alive) {
-                enemyList[i].moveHorizontal();
-                enemyList[i].moveVertical();
-              } else {
-                //get rid of enemy from list
-                enemyList.splice(i, 1);
+            if (window.playing) {
+
+              for (let i = 0; i < enemyList.length; i++) {
+                if (enemyList[i].alive) {
+                  enemyList[i].moveHorizontal();
+                  enemyList[i].moveVertical();
+                } else {
+                  //get rid of enemy from list
+                  enemyList.splice(i, 1);
+                }
               }
             }
           }
 
           function enemyAttack() {
-            for (let i = 0; i < enemyList.length; i++) {
-              if (enemyList[i].alive) {
-                enemyList[i].shoot(enemyList[i]);
+            if (window.playing) {
+              for (let i = 0; i < enemyList.length; i++) {
+                if (enemyList[i].alive) {
+                  enemyList[i].shoot(enemyList[i]);
+                }
+
               }
 
             }
           }
 
           function randomSpawn() {
-            if (enemyList.length < 12) {
-              let randomX = randomInt(0, 10);
-              let spawnXs = [60, 110, 160, 220, 270, 320, 370, 420, 470, 520]
-              let newenemy = new enemyShip(spawnXs[randomX], 30,
-                30, 30, 30, 30, "enemyShip");
+            if (window.playing) {
+              if (enemyList.length < 12) {
+                let randomX = randomInt(0, 10);
+                let spawnXs = [60, 110, 160, 220, 270, 320, 370, 420, 470, 520]
+                let newenemy = new enemyShip(spawnXs[randomX], 30,
+                  30, 30, 30, 30, "enemyShip");
                   newenemy.drawSelf();
                   enemyList.push(newenemy);
+
+                }
 
             }
           }
@@ -638,7 +654,7 @@
 
           function drawUI() {
             ctx_ui.font = "14px Calibri";
-            ctx_ui.clearRect(0, 300, 100, 40);
+            ctx_ui.clearRect(0, 300, 100, 110);
             ctx_ui.fillText("Shield:", 0, 300);
             ctx_ui.fillText(playerList[0].shieldHP, 45, 300);
             ctx_ui.fillText("Hull:", 0, 320);
@@ -646,32 +662,24 @@
           }
 
           function updateLoop() {
+            if (window.playing) {
 
-            window.requestAnimationFrame(updateLoop);
-            window.bg.drawSelf();
-            updateShip();
-            drawUI();
-            updateBullets();
-            updateExplosions();
-            updateCannon();
-
+              window.requestAnimationFrame(updateLoop);
+              window.bg.drawSelf();
+              updateShip();
+              drawUI();
+              updateBullets();
+              updateExplosions();
+              updateCannon();
+              defeatCondition();
+            }
           }
 
         function setAllIntervals() {
-          //update intervals
-          window.setInterval(randomSpawn, 3000);
-          window.setInterval(enemyUpdate, 500);
-          window.setInterval(enemyAttack, randomInt(500, 5000));
-          // window.setInterval(updateCannon, 600);
-
-          //draw intervals
-          //draw bg
-          // const bg = new Parallax();
-          // window.setInterval(bg.drawSelf, 16);
-          // window.setInterval(updateShip, 16);
-          // window.setInterval(drawUI, 16);
-          // window.setInterval(updateBullets, 16);
-          // window.setInterval(updateExplosions, 16);
+          //custom update intervals
+            window.setInterval(randomSpawn, 3000);
+            window.setInterval(enemyUpdate, 500);
+            window.setInterval(enemyAttack, randomInt(500, 5000));
 
         }//end set all intervals
 
@@ -764,24 +772,24 @@
           cannon.posY = 260;
 
 
-
-
-
-          // //max left is 180, max right is 380
-          // if (cannon.posX > 380) {
-          //   cannon.posX -= 18;
-          //   cannon.posY -= 10;
-          // }
-          // // else if (cannon.posX < 380 && cannon.posX > 300){
-          // //   cannon.posX -= 16;
-          // //   cannon.posY -= 12;}
-          // else if (cannon.posX < 180) {
-          //   cannon.posX -= 14;
-          //   cannon.posY += 14;
-          // } else {
-          //   cannon.posX -= 20;
-          // }
           cannon.screenResets();
+        }
+
+        function defeatCondition() {
+          if (playerList[0].hullHP <= 0)
+          defeat();
+        }
+
+        function defeat() {
+          window.playing = false;
+          window.defeat = true;
+          if (window.defeat) {
+            cannon.alive = false;
+            ctx_ui.fillStyle = "White";
+            ctx_ui.font = '40px "Press Start 2P"';
+            ctx_ui.fillText("DEFEAT", canvas.width / 2 -100, 55);
+          }
+          //show graphic for defeated
         }
 
         //keypress handler
@@ -794,6 +802,7 @@
               case 37:
               e.preventDefault();
               //left
+              playerList[0].takeDamage();
               ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
               moveLeft();
               console.log(cannon.posX, cannon.posY);
