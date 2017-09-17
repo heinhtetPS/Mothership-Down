@@ -140,7 +140,7 @@
           //press enter event
           document.addEventListener('keydown', (e) => {
 
-            if (e.keyCode === 13) {
+            if (e.keyCode === 13 && !window.playing) {
               e.preventDefault();
               ctx_ui.clearRect(0,0, 600, 400);
               window.playing = true;
@@ -710,22 +710,20 @@
           if (cannon.posX > 70 && cannon.posX < 380) {
             cannon.posX += 20;
           } else {
-            cannon.posX += 10
+            cannon.posX += 10;
           }
 
           //vertical movement
 
-          //move right while you're on right
-          if (cannon.posX > 300) {
-            cannon.posY += 5
-          } else if (cannon.posX > 415) {
-            cannon.posY += 10;
+          //descend while you're on right
+          if (cannon.posX > 415) {
+            cannon.posY += 5;
           }
-          //move right while you're on left
+          //ascend while you're on left
           else if (cannon.posX < 300) {
-            cannon.posY -= 5;
-          } else if (cannon.posX < 185) {
             cannon.posY -= 10;
+          } else if (cannon.posX < 185) {
+            cannon.posY -= 15;
           }
 
           //downward bounds
@@ -745,22 +743,20 @@
           if (cannon.posX > 70 && cannon.posX < 380) {
             cannon.posX -= 20;
           } else {
-            cannon.posX -= 10
+            cannon.posX -= 10;
           }
 
           //vertical movement
 
-          //move left while you're on left
-          if (cannon.posX < 300) {
-            cannon.posY += 5
-          } else if (cannon.posX < 185) {
+          //decend while you're on left
+          if (cannon.posX < 185) {
             cannon.posY += 10;
           }
-          //move left while you're on right
+          //ascend while you're on right
           else if (cannon.posX > 300) {
-            cannon.posY -= 5;
+            cannon.posY -= 10;
           } else if (cannon.posX > 415) {
-            cannon.posY -= 100;
+            cannon.posY -= 15;
           }
 
           //downward bounds
@@ -802,7 +798,7 @@
               case 37:
               e.preventDefault();
               //left
-              playerList[0].takeDamage();
+
               ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
               moveLeft();
               console.log(cannon.posX, cannon.posY);
@@ -833,6 +829,10 @@
                 // console.log(bulletList);
                 console.log(cannon.posX);
                 break;
+                //tester keycode q
+              case 81:
+              playerList[0].takeDamage();
+              break;
                 //add another case for pause if time allows
                 default:
               }
