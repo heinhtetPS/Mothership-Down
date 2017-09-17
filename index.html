@@ -230,10 +230,11 @@
             this.posX, this.posY, this.width, this.height);
           }
           screenResets() {
-            if (cannon.posX < window.screenResets.left)
-            cannon.posX = 580;
-            if (cannon.posX > window.screenResets.right)
-            cannon.posX = 0;
+            //if it goes off right side
+            if (cannon.posX > 580)
+            cannon.posX = 40;
+            if (cannon.posX < 30)
+            cannon.posX = 570;
           }
 
           respawn() {
@@ -707,7 +708,7 @@
         function moveRight() {
 
           //horizontal movement
-          if (cannon.posX > 70 && cannon.posX < 380) {
+          if (cannon.posX > 70 && cannon.posX < 530) {
             cannon.posX += 20;
           } else {
             cannon.posX += 10;
@@ -717,7 +718,7 @@
 
           //descend while you're on right
           if (cannon.posX > 415) {
-            cannon.posY += 5;
+            cannon.posY += 10;
           }
           //ascend while you're on left
           else if (cannon.posX < 300) {
@@ -740,7 +741,7 @@
         function moveLeft() {
 
           //horizontal movement
-          if (cannon.posX > 70 && cannon.posX < 380) {
+          if (cannon.posX > 70 && cannon.posX < 580) {
             cannon.posX -= 20;
           } else {
             cannon.posX -= 10;
