@@ -103,32 +103,21 @@ h1 {
   color: magenta;
 }
 
-/*.bg-cutter {
-  width: 1200px;
-  display: flex;
-  flex-direction: row;
+.mutebutton {
+  background-color: antiquewhite;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border-radius: 6px;
   position: relative;
-  overflow: hidden;
-}*/
-
-/*#canvas-bg {
-  width: 1200px;
-  height: 400px;
-  background-image: url("../images/maxresdefault.jpg");
-  transform: translate3d(0, 0, 0);
-  animation: moveSlideshow 12s linear infinite;
-  overflow: hidden;
-  position: relative;
-  right: 600px;
+  top: 160px;
+  right: 43px;
+  border: 2px solid white;
 }
 
-
-@keyframes moveSlideshow {
-  100% {
-    transform: translateX(33.3333%);
-  }
-}*/
-
+.mutebutton:hover {
+  color: magenta;
+}
 
 #canvas {
   max-width: 600px;
