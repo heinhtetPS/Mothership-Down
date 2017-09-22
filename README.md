@@ -1,6 +1,5 @@
 # Mothership-Down
-
-## Proposal
+[Live](http://heinhtetps.info/Mothership-Down/)
 
 Mothership Down tells the story of the popular arcade classic "Space Invaders" but from the side of the Alien invaders instead of the humans. It contains elements of the original space invaders, but adds additional layers of resource management and some tower defense mechanics that introduce a deeper sense of urgency and hectic gameplay into the mix.
 
