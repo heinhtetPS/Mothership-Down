@@ -101,6 +101,10 @@
             this.bgm = document.createElement("audio");
 
 
+            this.shootsound = document.createElement("audio");
+            this.shootsound.src = "./assets/audio/shoot.wav";
+
+
           }//end of audio Repo
 
           //helper methods-----------------------
@@ -834,6 +838,7 @@
               case 32:
               //spacebar shoot
               e.preventDefault();
+              audioRepo.shootsound.play();
               let nb = new bullet(
                 cannon.posX + 5, cannon.posY, 10, 6, 12);
                 nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12, "player");
