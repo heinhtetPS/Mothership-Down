@@ -232,7 +232,7 @@
           }
 
           drawSelf() {
-            ctx.clearRect(this.posX, this.posY, this.width, this.height -15);
+            ctx.clearRect(this.posX, this.posY, this.width, this.height -25);
             ctx.drawImage(imageRepo.cannonSheet,
             0, 0, 90, 220,
             this.posX, this.posY, this.width, this.height);
@@ -715,6 +715,8 @@
         //gotta split horizontal and vertical properly
         function moveRight() {
 
+          ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
+
           //horizontal movement
           if (cannon.posX > 70 && cannon.posX < 530) {
             cannon.posX += 20;
@@ -747,6 +749,8 @@
         }
 
         function moveLeft() {
+
+          ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
 
           //horizontal movement
           if (cannon.posX > 70 && cannon.posX < 580) {
@@ -808,23 +812,23 @@
               e.preventDefault();
               //left
 
-              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
+
               moveLeft();
               // console.log(cannon.posX, cannon.posY);
               ctx.drawImage(imageRepo.cannonSheet,
               0, 0, 90, 220,
-              cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
+              cannon.posX, cannon.posY, cannon.width, cannon.height - 20);
               break;
 
               case 39:
               e.preventDefault();
               //right
-              ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
+
               moveRight();
               // console.log(cannon.posX, cannon.posY);
               ctx.drawImage(imageRepo.cannonSheet,
               0, 0, 90, 220,
-              cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
+              cannon.posX, cannon.posY, cannon.width, cannon.height - 20);
               break;
 
               case 32:
