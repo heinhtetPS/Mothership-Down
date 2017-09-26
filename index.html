@@ -515,7 +515,7 @@
               //   this.posX, this.posY, this.width / this.numberOfFrames, this.height);
                 //old one
                 ctx.drawImage(imageRepo.explosion,
-                  0,          0,        30,        37,
+                  0,          0,        21,        39,
                   this.posX, this.posY, this.width, this.height);
             }
 
@@ -580,8 +580,7 @@
 
                   explosionList[i].update();
                   explosionList[i].drawSelf();
-                    // console.log(explosionList[i].timer);
-                    if (explosionList[i].timer >= 100) {
+                    if (explosionList[i].timer >= 200) {
                       explosionList[i].destroy();
                       explosionList.splice(i, 1);
                     }
@@ -809,7 +808,7 @@
 
               ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
               moveLeft();
-              console.log(cannon.posX, cannon.posY);
+              // console.log(cannon.posX, cannon.posY);
               ctx.drawImage(imageRepo.cannonSheet,
               0, 0, 90, 220,
               cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
@@ -820,7 +819,7 @@
               //right
               ctx.clearRect(cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
               moveRight();
-              console.log(cannon.posX, cannon.posY);
+              // console.log(cannon.posX, cannon.posY);
               ctx.drawImage(imageRepo.cannonSheet,
               0, 0, 90, 220,
               cannon.posX, cannon.posY, cannon.width, cannon.height - 15);
@@ -835,7 +834,6 @@
                 nb.drawSelf();
                 bulletList.push(nb);
                 // console.log(bulletList);
-                console.log(cannon.posX);
                 break;
                 //tester keycode q
               case 81:
