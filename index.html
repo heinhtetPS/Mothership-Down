@@ -67,7 +67,7 @@
             this.enemy1.src = "./assets/images/enemy1.png";
 
             this.explosion = new Image();
-            this.explosion.src = "./assets/images/explosheet.png";
+            this.explosion.src = "./assets/images/explonew.png";
 
             this.arrows = new Image();
             this.arrows.src = "./assets/images/arrows.png";
@@ -473,7 +473,7 @@
               //for spriteAnim
               this.frameIndex = 0;
               this.tickCount = 0;
-              this.ticksPerFrame = 0;
+              this.ticksPerFrame = 2;
               this.maxFrames = 7;
 
 
@@ -515,7 +515,7 @@
               //   this.posX, this.posY, this.width / this.numberOfFrames, this.height);
                 //old one
                 ctx.drawImage(imageRepo.explosion,
-                  0,          0,        21,        39,
+                  this.frameIndex * 297 / 7,          0,        42,        44,
                   this.posX, this.posY, this.width, this.height);
             }
 
