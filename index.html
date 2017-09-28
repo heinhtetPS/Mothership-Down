@@ -73,14 +73,14 @@
             this.arrows.src = "./assets/images/arrows.png";
             this.arrows.onload = () => {
               ctx_ui.drawImage(this.arrows,
-              90, 190, 50, 50);
+              80, 210, 50, 50);
             }
 
             this.spacebar = new Image();
             this.spacebar.src = "./assets/images/spacebar.png";
             this.spacebar.onload = () => {
               ctx_ui.drawImage(this.spacebar,
-              300, 238, 100, 50);
+              290, 258, 100, 50);
             }
             this.healthbar = new Image();
 
@@ -140,15 +140,16 @@
           ctx_bg.fillRect(0,0,600,400);
           ctx_ui.fillStyle = "White";
           ctx_ui.font = '8px "Press Start 2P"';
-          ctx_ui.fillText("You are the last remaining survivors of your species,", 50, 40);
-          ctx_ui.fillText("thrust into the void of space...", 50, 50);
-          ctx_ui.fillText("...after your homeworld was ravaged by environmental destruction", 50, 60);
-          ctx_ui.fillText("your sensors have identified a nearby habitable planet...", 50, 80);
-          ctx_ui.fillText("The third planet in the Milky Way Galaxy...", 50, 90);
+          ctx_ui.fillText("You are the last remaining survivors of your species,", 40, 40);
+          ctx_ui.fillText("thrust into the void of space...", 40, 50);
+          ctx_ui.fillText("...after your homeworld was ravaged by environmental destruction", 40, 60);
+          ctx_ui.fillText("your sensors have identified a nearby habitable planet...", 40, 80);
+          ctx_ui.fillText("The third planet in the Milky Way Galaxy...", 40, 90);
           ctx_ui.font = '10px "Press Start 2P"';
-          ctx_ui.fillText("Use       to move cannon's position.", 50, 240);
-          ctx_ui.fillText("Shoot puny Earthlings with        .", 50, 260);
-          ctx_ui.fillText("Press Enter to Begin.", 50, 320);
+          ctx_ui.fillText("PROTECT THE MOTHERSHIP UNTIL INVASION BEACON TOUCHDOWN.", 40, 120);
+          ctx_ui.fillText("Use       to move cannon's position.", 40, 260);
+          ctx_ui.fillText("Shoot puny Earthlings with        .", 40, 280);
+          ctx_ui.fillText("Press Enter to Begin.", 40, 340);
 
           //press enter event
           document.addEventListener('keydown', (e) => {
