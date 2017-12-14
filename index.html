@@ -95,6 +95,9 @@
           window.audioRepo = new function() {
 
             this.bgm = document.createElement("audio");
+            this.bgm.src = "./assets/audio/bgm.mp3";
+            this.bgm.volume = 0.05;
+            this.bgm.loop = true;
 
 
             this.shootsound = document.createElement("audio");
@@ -155,6 +158,7 @@
               ctx_ui.clearRect(0,0, 600, 400);
               window.playing = true;
               window.bg = new Parallax();
+              window.audioRepo.bgm.play();
               setAllIntervals();
               updateLoop();
             }
@@ -863,7 +867,6 @@
               //spacebar shoot
               e.preventDefault();
               audioRepo.shootsound.play();
-              // setTimeout(1000, audioRepo.shootsound.pause());
               let nb = new bullet(
                 cannon.posX + 5, cannon.posY, 10, 6, 12);
                 nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12, "player");
