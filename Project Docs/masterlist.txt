@@ -1,0 +1,18 @@
+Todo
+- Implement visual UI instea of text and numbers
+- Power Management System
+- Get sound effects to work
+- Prevent Enemy collision with more directed movement
+- Of course, refactor code to not be one huge blob
+
+
+
+Issues
+- Font and images need to load before first screen
+- Only show shield if it has HP
+- Flickering sprites for both enemy and ship
+
+
+
+
+Current Changes
