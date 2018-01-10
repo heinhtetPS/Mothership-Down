@@ -159,6 +159,12 @@
               window.playing = true;
               window.bg = new Parallax();
               window.audioRepo.bgm.play();
+              document.getElementById('mutebutton').addEventListener('click', (e) => {
+                e.preventDefault();
+                e = e || window.event;
+                window.audioRepo.bgm.muted = !window.audioRepo.bgm.muted;
+                window.audioRepo.shootsound.muted = !window.audioRepo.shootsound.muted;
+              }, false);
               setAllIntervals();
               updateLoop();
             }
@@ -904,7 +910,7 @@
         <a href="https://github.com/heinhtetPS/Mothership-Down"><i id="linker"class="fa fa-github fa-2x"></i></a>
         <a href="mailto: heinhtet.pyisoe@gmail.com"><i id="linker"class="fa fa-envelope fa-2x"></i></a>
       </div>
-      <button class="mutebutton"><i class="fa fa-volume-up fa-2x" aria-hidden="true"></i></button>
+      <button id="mutebutton" class="mutebutton"><i class="fa fa-volume-up fa-2x" aria-hidden="true"></i></button>
     </div>
     <p>&copy; 2017 Hein Htet Pyi Soe. All Rights Reserved.</p>
   </body>
