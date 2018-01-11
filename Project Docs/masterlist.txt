@@ -10,8 +10,10 @@ Issues
 - Font and images need to load before first screen
 - Only show shield if it has HP
 - Flickering sprites for both enemy and ship
-- Get mute button to work
 
 
 
 Current Changes
+- mute button now works and has feedback
+- tried to use fontfaceset loading but doesn't work.
+- Wait a second, how does the TITLE FONT work but the canvas font doesn't?
