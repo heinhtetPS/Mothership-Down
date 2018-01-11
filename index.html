@@ -136,19 +136,7 @@
         }//end of initialize
 
         if (!window.playing) {
-          ctx_bg.fillRect(0,0,600,400);
-          ctx_ui.fillStyle = "White";
-          ctx_ui.font = '8px "Press Start 2P"';
-          ctx_ui.fillText("You are the last remaining survivors of your species,", 40, 40);
-          ctx_ui.fillText("thrust into the void of space...", 40, 50);
-          ctx_ui.fillText("...after your homeworld was ravaged by environmental destruction", 40, 60);
-          ctx_ui.fillText("your sensors have identified a nearby habitable planet...", 40, 80);
-          ctx_ui.fillText("The third planet in the Milky Way Galaxy...", 40, 90);
-          ctx_ui.font = '10px "Press Start 2P"';
-          ctx_ui.fillText("PROTECT THE MOTHERSHIP UNTIL INVASION BEACON TOUCHDOWN.", 40, 120);
-          ctx_ui.fillText("Use       to move cannon's position.", 40, 260);
-          ctx_ui.fillText("Shoot puny Earthlings with        .", 40, 280);
-          ctx_ui.fillText("Press Enter to Begin.", 40, 340);
+          drawIntro();
 
           //press enter event
           document.addEventListener('keydown', (e) => {
@@ -815,6 +803,22 @@
           victory();
         }
 
+        function drawIntro() {
+          ctx_bg.fillRect(0,0,600,400);
+          ctx_ui.fillStyle = "White";
+          ctx_ui.font = '8px "Press Start 2P"';
+          ctx_ui.fillText("You are the last remaining survivors of your species,", 40, 40);
+          ctx_ui.fillText("thrust into the void of space...", 40, 50);
+          ctx_ui.fillText("...after your homeworld was ravaged by environmental destruction", 40, 60);
+          ctx_ui.fillText("your sensors have identified a nearby habitable planet...", 40, 80);
+          ctx_ui.fillText("The third planet in the Milky Way Galaxy...", 40, 90);
+          ctx_ui.font = '10px "Press Start 2P"';
+          ctx_ui.fillText("PROTECT THE MOTHERSHIP UNTIL INVASION BEACON TOUCHDOWN.", 40, 120);
+          ctx_ui.fillText("Use       to move cannon's position.", 40, 260);
+          ctx_ui.fillText("Shoot puny Earthlings with        .", 40, 280);
+          ctx_ui.fillText("Press Enter to Begin.", 40, 340);
+        }
+
         function defeat() {
           window.playing = false;
           window.defeat = true;
@@ -896,6 +900,7 @@
     </script>
   </head>
   <body>
+  <div style="font-family: Press Start 2P;">.</div>
     <div class="content-container">
       <h1>MOTHERSHIP DOWN</h1>
       <div class="game-viewport">
