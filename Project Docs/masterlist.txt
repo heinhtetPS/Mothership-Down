@@ -18,3 +18,4 @@ Current Changes
 - tried to use fontfaceset loading but doesn't work.
 - 3 different methods failed: fontfaceset onload, the css and hidden div
 - Wait a second, how does the TITLE FONT work but the canvas font doesn't?
+- Using tiny timeout as a temp solution as it looks hella bad without it
