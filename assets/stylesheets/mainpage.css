@@ -9,6 +9,12 @@
   min-height: 600px;
 }
 
+/* @font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Press Start 2P'), url(https://fonts.googleapis.com/css?family=Press+Start+2P);
+} */
 
 h1 {
   font-family: 'Press Start 2P';

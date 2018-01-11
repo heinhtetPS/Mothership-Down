@@ -12,6 +12,7 @@
 
         //run once
         //this is from windows
+        const FONT_NAME = 'Press Start 2P';
         initialize();
 
         function initialize() {
@@ -22,6 +23,7 @@
           window.ctx = canvas.getContext('2d');
           window.ctx_bg = canvasBG.getContext('2d');
           window.ctx_ui = canvasUI.getContext('2d');
+
 
           //initialize images
           window.imageRepo = new function() {
@@ -136,7 +138,7 @@
         }//end of initialize
 
         if (!window.playing) {
-          document.fonts.load('18px "Press Start 2P"').then(drawIntro());
+          document.fonts.load('8pt "Press Start 2P"').then(drawIntro());
 
           //press enter event
           document.addEventListener('keydown', (e) => {
@@ -808,7 +810,7 @@
         function drawIntro() {
           ctx_bg.fillRect(0,0,600,400);
           ctx_ui.fillStyle = "White";
-          ctx_ui.font = '8px "Press Start 2P"';
+          ctx_ui.font = `8px "${FONT_NAME}"`;
           ctx_ui.fillText("You are the last remaining survivors of your species,", 40, 40);
           ctx_ui.fillText("thrust into the void of space...", 40, 50);
           ctx_ui.fillText("...after your homeworld was ravaged by environmental destruction", 40, 60);

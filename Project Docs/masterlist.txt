@@ -10,10 +10,11 @@ Issues
 - Font and images need to load before first screen
 - Only show shield if it has HP
 - Flickering sprites for both enemy and ship
-
+- Am I even using fontawesome in this project or is it just there...?
 
 
 Current Changes
 - mute button now works and has feedback
 - tried to use fontfaceset loading but doesn't work.
+- 3 different methods failed: fontfaceset onload, the css and hidden div
 - Wait a second, how does the TITLE FONT work but the canvas font doesn't?
