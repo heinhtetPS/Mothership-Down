@@ -136,7 +136,7 @@
         }//end of initialize
 
         if (!window.playing) {
-          drawIntro();
+          document.fonts.load('18px "Press Start 2P"').then(drawIntro());
 
           //press enter event
           document.addEventListener('keydown', (e) => {
@@ -147,11 +147,13 @@
               window.playing = true;
               window.bg = new Parallax();
               window.audioRepo.bgm.play();
+              //adding mute button functionality
               document.getElementById('mutebutton').addEventListener('click', (e) => {
                 e.preventDefault();
                 e = e || window.event;
                 window.audioRepo.bgm.muted = !window.audioRepo.bgm.muted;
                 window.audioRepo.shootsound.muted = !window.audioRepo.shootsound.muted;
+                e.currentTarget.classList.toggle('x');
               }, false);
               setAllIntervals();
               updateLoop();
@@ -821,6 +823,7 @@
 
         function defeat() {
           window.playing = false;
+          window.audioRepo.bgm.pause();
           window.defeat = true;
           if (window.defeat) {
             cannon.alive = false;
@@ -833,6 +836,7 @@
 
         function victory() {
           window.playing = false;
+          window.audioRepo.bgm.pause();
           window.victory = true;
           if (window.victory) {
             cannon.alive = false;
@@ -900,7 +904,7 @@
     </script>
   </head>
   <body>
-  <div style="font-family: Press Start 2P;">.</div>
+
     <div class="content-container">
       <h1>MOTHERSHIP DOWN</h1>
       <div class="game-viewport">
