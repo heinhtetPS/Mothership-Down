@@ -1,5 +1,5 @@
 Todo
-- Implement visual UI instea of text and numbers
+- Implement visual UI instead of text and numbers
 - Power Management System
 - Prevent Enemy collision with more directed movement
 - Of course, refactor code to not be one huge blob
@@ -8,9 +8,9 @@ Todo
 
 Issues
 - Font and images need to load before first screen
-- Only show shield if it has HP
 - Flickering sprites for both enemy and ship
-- Am I even using fontawesome in this project or is it just there...?
+- Am I even using fontawesome in this project or is it just there...? (its used for html icons)
+- Cannon doesn't die properly.
 
 
 Current Changes
@@ -20,3 +20,4 @@ Current Changes
 - Wait a second, how does the TITLE FONT work but the canvas font doesn't?
 - Using tiny timeout as a temp solution as it looks hella bad without it
 - refactoring playershoot to 1) be connected to cannon and 2) have more reasonable cd
+- Made shield disappear after losing all HP

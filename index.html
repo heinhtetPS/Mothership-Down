@@ -184,7 +184,7 @@
 
             this.drawSelf = this.drawSelf.bind(this);
             this.drawShield = this.drawShield.bind(this);
-            this.drawUI = this.drawUI.bind(this);
+            this.clearShield = this.clearShield.bind(this);
             this.takeDamage = this.takeDamage.bind(this);
           }
 
@@ -210,10 +210,9 @@
             this.posX - 20, this.posY - 60, this.width, this.height);
             ctx.globalAlpha = 1;
           }
-          drawUI() {
-            //this doesn't work at all
-            // ctx_ui.font = "30px Calibri";
-            // ctx_ui.fillText(`Shield: #{this.shieldHP}`, 50, 50);
+
+          clearShield() {
+            ctx.clearRect(this.posX - 20, this.posY - 60, this.width, this.height);
           }
         }
         //draw player stuff
@@ -543,7 +542,11 @@
 
           function updateShip() {
             //mothership
-            playerList[0].drawShield();
+            if (playerList[0].shieldHP > 0) {
+              playerList[0].drawShield();
+            } else if (playerList[0].shieldHP === 0) {
+              playerList[0].clearShield();
+            }
             playerList[0].drawSelf();
 
 
@@ -859,7 +862,7 @@
             ctx_ui.font = '40px "Press Start 2P"';
             ctx_ui.fillText("VICTORY", canvas.width / 2 -100, 55);
           }
-          //show graphic for defeated
+          //show graphic for victory
         }
 
 
@@ -870,35 +873,36 @@
           if (cannon.alive) {
             switch (e.keyCode) {
 
-              case 37:
-              e.preventDefault();
               //left
-
-
-              moveLeft();
-              // console.log(cannon.posX, cannon.posY);
-              ctx.drawImage(imageRepo.cannonSheet,
-              0, 0, 90, 220,
-              cannon.posX, cannon.posY, cannon.width, cannon.height - 20);
+              case 37:
+                e.preventDefault();
+                moveLeft();
+                ctx.drawImage(imageRepo.cannonSheet,
+                0, 0, 90, 220,
+                cannon.posX, cannon.posY, cannon.width, cannon.height - 20);
               break;
 
-              case 39:
-              e.preventDefault();
               //right
-
-              moveRight();
-              // console.log(cannon.posX, cannon.posY);
-              ctx.drawImage(imageRepo.cannonSheet,
-              0, 0, 90, 220,
-              cannon.posX, cannon.posY, cannon.width, cannon.height - 20);
+              case 39:
+                e.preventDefault();
+                moveRight();
+                ctx.drawImage(imageRepo.cannonSheet,
+                0, 0, 90, 220,
+                cannon.posX, cannon.posY, cannon.width, cannon.height - 20);
               break;
 
+              //spacebar shoot
               case 32:
-                //spacebar shoot
                 e.preventDefault();
                 playerList[1].playerShoot();
                 // console.log(bulletList);
-                break;
+              break;
+
+              //this is a tester button (q)
+              case 81:
+                e.preventDefault();
+
+              break;
 
                 //add another case for pause if time allows
                 default:
