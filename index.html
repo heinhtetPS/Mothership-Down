@@ -231,6 +231,7 @@
             this.alive = true;
             this.tag = "playerCannon";
             this.deathtimer = 0;
+            this.cooldown = 100;
 
             this.drawSelf = this.drawSelf.bind(this);
             this.screenResets = this.screenResets.bind(this);
@@ -265,6 +266,15 @@
             explosionList.push(newexplo);
             ctx.clearRect(this.posX, this.posY, this.width, this.height);
             this.alive = false;
+          }
+
+          playerShoot() {
+            audioRepo.shootsound.play();
+            let nb = new bullet(
+              cannon.posX + 5, cannon.posY, 10, 6, 12);
+              nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12, "player");
+              nb.drawSelf();
+              bulletList.push(nb);
           }
         }
         let cannon = new Cannon();
@@ -852,6 +862,7 @@
           //show graphic for defeated
         }
 
+
         //keypress handler
         //this is also basically the update() for ship
         document.addEventListener('keydown', (e) => {
@@ -883,20 +894,12 @@
               break;
 
               case 32:
-              //spacebar shoot
-              e.preventDefault();
-              audioRepo.shootsound.play();
-              let nb = new bullet(
-                cannon.posX + 5, cannon.posY, 10, 6, 12);
-                nb.spawn(cannon.posX + 5, cannon.posY, 10, 6, 12, "player");
-                nb.drawSelf();
-                bulletList.push(nb);
+                //spacebar shoot
+                e.preventDefault();
+                playerList[1].playerShoot();
                 // console.log(bulletList);
                 break;
-                //tester keycode q
-              case 81:
-              playerList[0].takeDamage();
-              break;
+
                 //add another case for pause if time allows
                 default:
               }
