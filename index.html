@@ -16,7 +16,7 @@
         initialize();
 
         function initialize() {
-            //initialize canvas vars
+          //initialize canvas vars
           window.canvas = document.getElementById('canvas');
           window.canvasBG = document.getElementById('canvas-BG');
           window.canvasUI = document.getElementById('canvas-UI');
@@ -167,9 +167,6 @@
         }
 
 
-
-
-
         //mothership def
         class Mothership {
           constructor() {
@@ -286,7 +283,6 @@
             this.width = 600;
             this.height = 400;
             this.speed = 0.2;
-
             this.drawSelf = this.drawSelf.bind(this);
           }
 
@@ -311,21 +307,21 @@
             //decide the tag on spawn
 
             this.spawn = function(x, y, velocity, width, height, tag) {
-              this.posX = x;
-              this.posY = y;
-              this.velocity = velocity;
-              this.width = width;
-              this.height = height;
-              this.alive = true;
-              this.tag = tag;
-            }
+            this.posX = x;
+            this.posY = y;
+            this.velocity = velocity;
+            this.width = width;
+            this.height = height;
+            this.alive = true;
+            this.tag = tag;
+          }
 
             this.drawSelf = function() {
 
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               ctx.fillStyle = "orange";
               ctx.fillRect(this.posX, this.posY, this.width, this.height);
-            }
+        }
 
             //I plugged in the numbers from the actual positions of the
             //bullet and mothership and it returned true
@@ -419,11 +415,11 @@
 
             moveHorizontal() {
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
-              if (randomInt(0,2) === 0) {
-                this.posX += 30;
-              } else {
-                this.posX -= 30;
-              }
+                if (randomInt(0,2) === 0) {
+                  this.posX += 30;
+                } else {
+                  this.posX -= 30;
+                }
               this.screenResets();
               ctx.drawImage(imageRepo.enemy1,
                 this.posX, this.posY, this.width, this.height);
@@ -432,9 +428,9 @@
             moveVertical() {
               let chancetoMoveForward = randomInt(0,10);
               let forwardVelocity = 0;
-              if (chancetoMoveForward >= 9) {
-                forwardVelocity = 30;
-              }
+                if (chancetoMoveForward >= 9) {
+                  forwardVelocity = 30;
+                }
               ctx.clearRect(this.posX, this.posY, this.width, this.height);
               ctx.fillStyle = "white";
               this.posY += forwardVelocity;
@@ -666,8 +662,6 @@
               this.imagePosY += 1;
             }
 
-
-
             this.drawSelf = function() {
               //draw beacon, vertical line, 2 horiz lines
               //clear, then invoke update, then redraw
@@ -698,7 +692,6 @@
 
           function updateLoop() {
             if (window.playing) {
-
               window.requestAnimationFrame(updateLoop);
               window.bg.drawSelf();
               updateShip();
@@ -718,14 +711,13 @@
             window.setInterval(randomSpawn, 3000);
             window.setInterval(enemyUpdate, 500);
             window.setInterval(enemyAttack, randomInt(500, 5000));
-
         }//end set all intervals
 
         function updateCannon() {
           let thisCannon = window.playerList[1];
           //it never goes in here
           if (!thisCannon.alive) {
-
+            //something is going wrong here
             thisCannon.deathtimer += 1;
             console.log(thisCannon.deathtimer);
             if (thisCannon.deathtimer >= 10) {
@@ -895,7 +887,6 @@
               case 32:
                 e.preventDefault();
                 playerList[1].playerShoot();
-                // console.log(bulletList);
               break;
 
               //this is a tester button (q)

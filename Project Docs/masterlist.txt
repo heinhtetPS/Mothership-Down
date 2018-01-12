@@ -15,9 +15,10 @@ Issues
 
 Current Changes
 - mute button now works and has feedback
-- tried to use fontfaceset loading but doesn't work.
-- 3 different methods failed: fontfaceset onload, the css and hidden div
-- Wait a second, how does the TITLE FONT work but the canvas font doesn't?
-- Using tiny timeout as a temp solution as it looks hella bad without it
+- Font loading problem
+  - tried to use fontfaceset loading but doesn't work.
+  - 3 different methods failed: fontfaceset onload, the css and hidden div
+  - Wait a second, how does the TITLE FONT work but the canvas font doesn't?
+  - Using tiny timeout as a temp solution as it looks hella bad without it
 - refactoring playershoot to 1) be connected to cannon and 2) have more reasonable cd
 - Made shield disappear after losing all HP
