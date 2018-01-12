@@ -7,7 +7,6 @@ Todo
 
 
 Issues
-- Font and images need to load before first screen
 - Flickering sprites for both enemy and ship
 - Am I even using fontawesome in this project or is it just there...? (its used for html icons)
 - Cannon doesn't die properly.
