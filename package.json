@@ -1,0 +1,28 @@
+{
+  "name": "mothership-down",
+  "version": "1.0.0",
+  "description": "js game for browser",
+  "main": "./lib/game.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "webpack": "^3.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test",
+    "build": "webpack -p",
+    "watch": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heinhtetPS/Mothership-Down.git"
+  },
+  "author": "heinhtetPS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heinhtetPS/Mothership-Down/issues"
+  },
+  "homepage": "https://github.com/heinhtetPS/Mothership-Down#readme"
+}
