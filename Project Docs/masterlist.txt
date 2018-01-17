@@ -4,12 +4,14 @@ Todo
 - Prevent Enemy collision with more directed movement
 - Of course, refactor code to not be one huge blob
 - shooting needs cooldown or some sort of restriction
+- refactor playershoot to 1) be connected to cannon and 2) have more reasonable cd
 - If enemy reaches ship, kamikaze attack for double dmg
 
 Issues
 - Flickering sprites for both enemy and ship
 - Am I even using fontawesome in this project or is it just there...? (its used for html icons)
 - Cannon doesn't die properly.
+  - deathtimer only counts to 10 and .alive is only false for milliseconds. Cannon dies but respawns without permission. 
 
 
 Current Changes
@@ -19,8 +21,7 @@ Current Changes
   - 3 different methods failed: fontfaceset onload, the css and hidden div
   - Wait a second, how does the TITLE FONT work but the canvas font doesn't?
   - Using tiny timeout as a temp solution as it looks hella bad without it
-- refactoring playershoot to 1) be connected to cannon and 2) have more reasonable cd
 - Made shield disappear after losing all HP
 - starting npm refactor (discarded unstable build)
-- use explosion as model for conversion, now all stable. Have to convert bullets;
-- completed bullets conversion to class and seperation from main
+- use explosion as model for conversion, now all stable
+- completed bullets, player, enemyship
