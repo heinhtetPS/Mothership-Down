@@ -21,4 +21,6 @@ Current Changes
   - Using tiny timeout as a temp solution as it looks hella bad without it
 - refactoring playershoot to 1) be connected to cannon and 2) have more reasonable cd
 - Made shield disappear after losing all HP
-- starting npm refactor
+- starting npm refactor (discarded unstable build)
+- use explosion as model for conversion, now all stable. Have to convert bullets;
+- completed bullets conversion to class and seperation from main
