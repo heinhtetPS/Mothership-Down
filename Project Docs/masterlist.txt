@@ -4,7 +4,7 @@ Todo
 - Prevent Enemy collision with more directed movement
 - Of course, refactor code to not be one huge blob
 - shooting needs cooldown or some sort of restriction
-
+- If enemy reaches ship, kamikaze attack for double dmg
 
 Issues
 - Flickering sprites for both enemy and ship
