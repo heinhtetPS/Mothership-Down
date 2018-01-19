@@ -24,4 +24,5 @@ Current Changes
 - Made shield disappear after losing all HP
 - starting npm refactor (discarded unstable build)
 - use explosion as model for conversion, now all stable
-- completed bullets, player, enemyship
+- completed bullets, player, enemyship, parallaxbg
+-
