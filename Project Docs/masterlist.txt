@@ -22,3 +22,4 @@ Current Changes
 - use explosion as model for conversion, now all stable
 - completed bullets, player, enemyship, parallaxbg
 - completed shooting cd addition
+- main task for today: separate enemy update from draw
