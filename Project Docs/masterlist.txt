@@ -8,9 +8,7 @@ Todo
 Issues
 - Flickering sprites for both enemy and ship
 - Am I even using fontawesome in this project or is it just there...? (its used for html icons)
-- Cannon doesn't die properly.
-  - deathtimer only counts to 10 and .alive is only false for milliseconds. Cannon dies but respawns without permission.
-  - this problem above has resolved itself mysteriously overnight
+- All enemies shoot at the same time, this is dumb
 
 Current Changes
 - mute button now works and has feedback
