@@ -2,9 +2,7 @@ Todo
 - Implement visual UI instead of text and numbers
 - Power Management System
 - Prevent Enemy collision with more directed movement
-- Of course, refactor code to not be one huge blob
-- shooting needs cooldown or some sort of restriction
-- refactor playershoot to 1) be connected to cannon and 2) have more reasonable cd
+- Continue to refactor game.js to not be so dense
 - If enemy reaches ship, kamikaze attack for double dmg
 
 Issues
@@ -25,4 +23,4 @@ Current Changes
 - starting npm refactor (discarded unstable build)
 - use explosion as model for conversion, now all stable
 - completed bullets, player, enemyship, parallaxbg
--
+- completed shooting cd addition
