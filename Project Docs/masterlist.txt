@@ -4,11 +4,11 @@ Todo
 - Prevent Enemy collision with more directed movement
 - Continue to refactor game.js to not be so dense
 - If enemy reaches ship, kamikaze attack for double dmg
+- fix mothership hitbox to ignore edge cases
 
 Issues
 - Flickering sprites for both enemy and ship
 - Am I even using fontawesome in this project or is it just there...? (its used for html icons)
-- All enemies shoot at the same time, this is dumb
 
 Current Changes
 - mute button now works and has feedback
@@ -23,3 +23,6 @@ Current Changes
 - completed bullets, player, enemyship, parallaxbg
 - completed shooting cd addition
 - main task for today: separate enemy update from draw
+- the above didn't fix problem, need to change enemy attack method in game.
+- fixed simultaneous shooting enemies by adding custom cd for each enemy
+  -upon invoking update, it will either reduce cd or shoot if cd is up
