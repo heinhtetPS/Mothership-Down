@@ -23,8 +23,7 @@ Bonus
 
 ## Technologies, Libraries, APIs
 
-Currently, I am aiming to write all logic in Javascript and most graphics being rendered in HTML5 Canvas. I'm hoping to incorporate spritesheets and sprite animation.
-
+Currently, all game logic is in vanilla Javascript and all graphics/animations are being rendered in HTML5 Canvas.
 
 ## Wireframes
 

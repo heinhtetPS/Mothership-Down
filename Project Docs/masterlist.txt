@@ -5,6 +5,9 @@ Todo
 - Continue to refactor game.js to not be so dense
 - If enemy reaches ship, kamikaze attack for double dmg
 - fix mothership hitbox to ignore edge cases
+- add retry feature when the game ends
+- add more code snippets in the readme, update readme in general to be docs instead of proposal
+- Make gun shooting connected with beacon status
 
 Issues
 - Flickering sprites for both enemy and ship
