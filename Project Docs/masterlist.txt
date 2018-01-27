@@ -5,9 +5,10 @@ Todo
 - Continue to refactor game.js to not be so dense
 - If enemy reaches ship, kamikaze attack for double dmg
 - fix mothership hitbox to ignore edge cases
-- add retry feature when the game ends
 - add more code snippets in the readme, update readme in general to be docs instead of proposal
 - Make gun shooting connected with beacon status
+- pause screen maybe?
+- What can you do when you choose no for retry?
 
 Issues
 - Flickering sprites for both enemy and ship
@@ -29,3 +30,6 @@ Current Changes
 - the above didn't fix problem, need to change enemy attack method in game.
 - fixed simultaneous shooting enemies by adding custom cd for each enemy
   -upon invoking update, it will either reduce cd or shoot if cd is up
+- Added retry screen which required its own draw loop. Can be used as a pause screen also
+- retry is naive implementation of just reloading the entire page.
+- Retry bug where choosing no still resets
