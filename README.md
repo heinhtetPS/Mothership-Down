@@ -23,11 +23,23 @@ Bonus
 
 ## Technologies, Libraries, APIs
 
-Currently, all game logic is in vanilla Javascript and all graphics/animations are being rendered in HTML5 Canvas.
+Currently, all game logic is in vanilla Javascript and all graphics/animations are being rendered in HTML5 Canvas. Webpack is used to organize script files.
+
+### Game
+
+The main game loop is established and maintained in game.js. First, all assets are initialized such as the canvas DOM elements, audio, spritesheets and variable trackers.
+
+### Update
+
+Game logic is handled by the update loop, which loops through all game objects and decides their upcoming behavior depending on game state and player input. For example, bulletList lists all bullets on screen and loops through them to apply their velocity each frame. The speed and trajectory are decided upon bullet generation, however their actual movement is handled by update. Player controls are also contained here, updating the player's cannon depending on keystrokes received.
+
+### Draw & Animation
+
+Each game object has a drawSelf() function which commands the object to display their associated image from the spritesheets (which are initialized in the beginning of the game). Sprites that animate are simply drawing different parts of their sprite sheet and looping through them using an internal timer. For example, the explosion animation is achieved by looping through 7 static sprite images in very quick succession.    
 
 ## Wireframes
 
-Main and only screen:
+Main screen:
 
 ![wireframe sketch](https://github.com/heinhtetPS/Mothership-Down/blob/master/Project%20Docs/Photo%20Sep%2006%2C%2012%2057%2056%20AM.jpg "wireframe sketch")
 
@@ -64,3 +76,4 @@ Main and only screen:
 
 ## Credits
 - Spaceship assets from http://millionthvector.blogspot.com/
+- Music by Shoji Meguro.
